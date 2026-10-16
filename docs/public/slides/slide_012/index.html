@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+  </style>
+  <link rel="stylesheet" href="../../css/theme_002.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <title>Slides</title>
+</head>
+<body>
+  <article class="container">
+        <nav>
+      
+      
+      <h3 class="section__title">
+        <a class="slide__title" href="../slide_001">
+        How do we query a relational database?
+        </a>
+      </h3>
+      
+      <a class="slide__previous" href="../slide_011/"><</a>
+      <link rel="stylesheet" href="../../css/theme_002.css">
+      <a class="slide__next" href="../slide_013/">></a>
+
+      <h2 class="slide__title">
+        <a class="slide__title" href="../slide_001">
+        SQL Functions
+        </a>
+      </h2>
+
+      <p class="logo">
+        <a class="slide__title" href="../slide_001">
+          <span>(“</span>Manchester<span>”)+<br></span><span>(“</span>Digital<span>”)></span>
+        </a>
+      </p>
+    </nav>
+    <main class=grid-2>
+      <section class="slide__text">
+<h5>Change output with functions</h5>
+<p>We've already used <strong>arithmetic operators</strong> to perform calculations on numeric values</p>
+<p>There are also a lot of <strong>baked-in functions</strong> we can use to change the output of <strong>string and date-based fields</strong></p>
+<p>We'll only go through a few in this Bootcamp</p>
+<p>The most common functions are listed below</p>
+<h6>ROUND()</h6>
+<p>Rounds a numeric value to a specific number of decimal places</p>
+<pre><code>SELECT ROUND(&lt;number&gt;, &lt;decimal places&gt;)
+</code></pre>
+<p>It will round up or down to the nearest decimal</p>
+<p>For example:</p>
+<ul>
+<li><code>SELECT ROUND(3.1415926535, 2);</code> returns 3.14;</li>
+<li><code>SELECT ROUND(3.1415926535, 3);</code> returns 3.142;</li>
+</ul>
+<h6>CURRENT_DATE</h6>
+<p>Return the current date in 'YYYY-MM-DD' format</p>
+<pre><code>SELECT CURRENT_DATE;
+</code></pre>
+<h6>CURRENT_TIMESTAMP</h6>
+<p>Return the current date and time to the millisecond ('YYYY-MM-DD HH:mm:ss.ms)</p>
+<pre><code>SELECT CURRENT_TIMESTAMP;
+</code></pre>
+<h6>Date INTERVAL</h6>
+<p>Returns a date relative to the one you input</p>
+<pre><code>SELECT &lt;date&gt; + | - INTERVAL '&lt;interval&gt;';
+</code></pre>
+<p>The interval can be 'day', 'week', 'month', or 'year'</p>
+<p>For example</p>
+<ul>
+<li><code>SELECT CURRENT_TIMESTAMP + INTERVAL '1 day';</code> returns a tomorrow's date and time</li>
+<li><code>SELECT '2022-03-27 10:15:54'::TIMESTAMP - INTERVAL '2 months';</code> returns a date and time exactly 2 months before the input (27th January 2022 @ 10:15:54 in this case)
+<ul>
+<li>Note that we have to convert the string date to a date or a timestamp for this function to work</li>
+</ul>
+</li>
+</ul>
+<h6>LENGTH()</h6>
+<p>Counts the number of characters in an input</p>
+<pre><code>SELECT LENGTH(&lt;input&gt;);
+</code></pre>
+<p>For example, <code>SELECT LENGTH('abcdefgh');</code> is 8 characters long and so returns 8.</p>
+<h6>LEFT()</h6>
+<p>Return the start of a string</p>
+<pre><code>SELECT LEFT(&lt;input&gt;, &lt;characters&gt;);
+</code></pre>
+<p>For example <code>SELECT LEFT('abcdefgh', 3);</code> returns the first 3 characters 'abc'</p>
+<h6>RIGHT()</h6>
+<p>Return the end of a string</p>
+<pre><code>SELECT RIGHT(&lt;input&gt;, &lt;characters&gt;);
+</code></pre>
+<p>For example <code>SELECT RIGHT('abcdefgh', 3);</code> returns the last 3 characters 'fgh'</p>
+<h6>SUBSTRING()</h6>
+<p>Return part of a string</p>
+<pre><code>SELECT SUBSTRING(&lt;input&gt;, &lt;start char&gt;, &lt;num of chars&gt;);
+</code></pre>
+<p>For example <code>SELECT SUBSTRING('abcdefgh', 3, 4);</code></p>
+<ul>
+<li>Starts at the 3rd character</li>
+<li>Returns 4 characters from there, so 3rd, 4th, 5th and 6th characters 'cdef'</li>
+</ul>
+<h6>CONCAT()</h6>
+<p>Merge different strings together</p>
+<pre><code>SELECT CONCAT(&lt;input&gt;, &lt;start char&gt;, &lt;num of chars&gt;);
+</code></pre>
+<p>For example, <code>SELECT CONCAT('abcdefgh', ' ijkl ', 'mnop');</code> returns 'abcdefgh ijkl mnop'</p>
+</section>
+<section class="slide__images">
+    <caption>1. ROUND function</caption>
+    <img src="../../images/002_SELECT_Function_Round.png" />
+    <caption>2. Date Interval (Difference) function</caption>
+    <img src="../../images/002_SELECT_Function_Date_Interval.png" />
+    <caption>3. LENGTH function</caption>
+    <img src="../../images/002_SELECT_Function_Length.png" />
+    <caption>4. LEFT function</caption>
+    <img src="../../images/002_SELECT_Function_Left.png" />
+    <caption>5. RIGHT function</caption>
+    <img src="../../images/002_SELECT_Function_Right.png" />
+    <caption>6. SUBSTRING function</caption>
+    <img src="../../images/002_SELECT_Function_Substring.png" />
+    <caption>7. CONCAT function</caption>
+    <img src="../../images/002_SELECT_Function_Concat.png" />
+</section>
+<section class="slide__exercises">
+<hr>
+<h4>Exercises:</h4>
+<ol>
+<li>Consider the text 'Manchester Digital Database Bootcamp'</li>
+</ol>
+<ul>
+<li>How long is this text in characters?</li>
+<li>Extract the word 'Bootcamp' from the text</li>
+<li>Extract the word 'Database' from the text</li>
+</ul>
+<ol start="2">
+<li>Using the CURRENT_TIMESTAMP</li>
+</ol>
+<ul>
+<li>Return a timestamp from 6 weeks ago</li>
+<li>Return a timestamp 2 years into the future</li>
+</ul>
+</section>
+    </main>
+        
+    <footer>
+      
+
+      <h3>
+        <a class="slide__title" href="../slide_001">
+        Database Bootcamp 6
+        </a>
+      </h3>
+
+      <h5 class="slide__copy">
+        <span>© Thomas Steeples 2022</span>
+      </h5>
+
+
+      <p class="slide-number">Slide 12</p>
+    </footer>
+  </article>
+  <script src="../../js/app.js"></script>
+</body>
+</html>

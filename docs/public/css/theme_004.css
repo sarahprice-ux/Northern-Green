@@ -1,0 +1,9 @@
+:root {
+  --clr-bg-1: hsl(0, 0%, 97%);
+  --clr-bg-code: hsl(0, 0%, 88%);
+  
+  --clr-text-main: hsl(198, 31%, 35%);
+  --clr-text-main-hover: hsl(198, 21%, 15%);
+  --clr-text-sect: hsl(119, 50%, 66%, 0.75);
+
+}

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+  </style>
+  <link rel="stylesheet" href="../../css/theme_003.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <title>Slides</title>
+</head>
+<body>
+  <article class="container">
+        <nav>
+      
+      
+      <h3 class="section__title">
+        <a class="slide__title" href="../slide_001">
+        How do we change content?
+        </a>
+      </h3>
+      
+      <a class="slide__previous" href="../slide_033/"><</a>
+      <link rel="stylesheet" href="../../css/theme_003.css">
+      <a class="slide__next" href="../slide_035/">></a>
+
+      <h2 class="slide__title">
+        <a class="slide__title" href="../slide_001">
+        DROP...
+        </a>
+      </h2>
+
+      <p class="logo">
+        <a class="slide__title" href="../slide_001">
+          <span>(“</span>Manchester<span>”)+<br></span><span>(“</span>Digital<span>”)></span>
+        </a>
+      </p>
+    </nav>
+    <main class=grid-2>
+      <section class="slide__text">
+<h5>Delete an object from a database</h5>
+<p>Tell the server that you want to:</p>
+<ul>
+<li>Delete a table</li>
+</ul>
+<pre><code>DROP TABLE &lt;schema_name&gt;.&lt;table_name&gt;;
+</code></pre>
+<ul>
+<li>Delete a schema</li>
+</ul>
+<pre><code>DROP SCHEMA &lt;schema_name&gt;;
+</code></pre>
+<div class="warning">IMPORTANT:</div>
+<div class="warning">- Dropping something will remove it from the database server!</div>
+<div class="warning">- Sometimes this command can fail if something else in the database depends on it existing</div>
+<h6>Example table</h6>
+<p>To practice, let's create a new table called <code>aaa_Dummy_Table</code> on our <code>sequel-mart-schema</code> and drop it:</p>
+<pre><code>CREATE TABLE &quot;sequel-mart-schema&quot;.&quot;aaa_Dummy_Table&quot; (
+	column_001 INT,
+	column_002 VARCHAR(10),
+	column_003 TIMESTAMP,
+	column_004 NUMERIC(9,2)
+);
+</code></pre>
+<p>This creates our table.  We can query it:</p>
+<pre><code>SELECT *
+FROM &quot;sequel-mart-schema&quot;.&quot;aaa_Dummy_Table&quot;;
+</code></pre>
+<p>Now let's remove (or <code>DROP</code>) it:</p>
+<pre><code>DROP TABLE &quot;sequel-mart-schema&quot;.&quot;aaa_Dummy_Table&quot;;
+</code></pre>
+<p>NOTE:</p>
+<ul>
+<li>Because this statement can be applied to many other object types we cannot use the a shorthand</li>
+</ul>
+</section>
+<section class="slide__images">
+<caption>1. CREATE aaa_Dummy_Table</caption>
+<img src="../../images/003_DROP_Dummy_Table_CREATE.png" />
+<caption>2. aaa_Dummy_Table included in database schema</caption>
+<img src="../../images/003_DROP_Dummy_Table_List.png" />
+<caption>3. SELECT FROM aaa_Dummy_Table</caption>
+<img src="../../images/003_DROP_Dummy_Table_SELECT.png" />
+<caption>4. DROP aaa_Dummy_Table</caption>
+<img src="../../images/003_DROP_Dummy_Table_DROP.png" />
+<caption>5. aaa_Dummy_Table no longer in database schema</caption>
+<img src="../../images/003_DROP_Dummy_Table_List_After.png" />
+</section>
+
+    </main>
+        
+    <footer>
+      
+
+      <h3>
+        <a class="slide__title" href="../slide_001">
+        Database Bootcamp 6
+        </a>
+      </h3>
+
+      <h5 class="slide__copy">
+        <span>© Thomas Steeples 2022</span>
+      </h5>
+
+
+      <p class="slide-number">Slide 34</p>
+    </footer>
+  </article>
+  <script src="../../js/app.js"></script>
+</body>
+</html>

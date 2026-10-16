@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+  </style>
+  <link rel="stylesheet" href="../../css/theme_006.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <title>Slides</title>
+</head>
+<body>
+  <article class="container">
+        <nav>
+      
+      
+      <h3 class="section__title">
+        <a class="slide__title" href="../slide_001">
+        Exercises
+        </a>
+      </h3>
+      
+      <a class="slide__previous" href="../slide_050/"><</a>
+      <link rel="stylesheet" href="../../css/theme_006.css">
+      <a class="slide__next" href="../slide_052/">></a>
+
+      <h2 class="slide__title">
+        <a class="slide__title" href="../slide_001">
+        Customer View
+        </a>
+      </h2>
+
+      <p class="logo">
+        <a class="slide__title" href="../slide_001">
+          <span>(“</span>Manchester<span>”)+<br></span><span>(“</span>Digital<span>”)></span>
+        </a>
+      </p>
+    </nav>
+    <main class=grid-2>
+      <section class="slide__text">
+<h4>Exercise 6.2 - Customers:</h4>
+<p>In pg-admin, create a SQL script that does the following:</p>
+<p>Tables:</p>
+<ul>
+<li><code>Customers</code>.  Alias as <code>cu</code></li>
+<li><code>Sales_Header</code>.  Alias as <code>sh</code></li>
+<li><code>Sales_Detail</code>.  Alias as <code>sd</code></li>
+</ul>
+<p>Attributes:</p>
+<ul>
+<li><code>customer_name</code>. Alias as <code>customer</code></li>
+<li>Most recent <code>date_sale</code>. Alias as <code>most_recent</code>
+<ul>
+<li>HINT: Use the <code>MAX</code> aggregator for this</li>
+</ul>
+</li>
+<li>Count the number of <code>sale_id</code>s for that customer. Alias as <code>transactions</code></li>
+<li>Average <code>revenue</code> for that customer rounded to 1 decimal place. Alias as <code>avg_spend</code></li>
+<li>Average number of <code>items_sold</code> rounded to 1 decimal place. Alias as <code>avg_items</code></li>
+<li>Average <code>feedback_score</code> rounded to 1 decimal place. Alias as <code>avg_feedback</code></li>
+</ul>
+<p>Other considerations:</p>
+<ul>
+<li>Order by <code>average revenue</code> with the highest value first</li>
+<li>Limit the output to the first 10 rows only</li>
+</ul>
+<hr />
+<ul>
+<li>
+<p>Test this script in PostgreSQL</p>
+<ul>
+<li>The names and data should match the screenshot</li>
+</ul>
+</li>
+<li>
+<p>Convert this SQL script into a <code>VIEW</code> called <code>v_Top_Customers</code></p>
+</li>
+<li>
+<p>Append SQL to <code>SELECT * FROM</code> this <code>VIEW</code> into the space provided in line 13 of <strong>backend/routes/customers.js</strong></p>
+</li>
+<li>
+<p>Save and close <strong>backend/routes/customers.js</strong></p>
+</li>
+</ul>
+<div class="warning">You may need to close and re-run your Docker session for this to take effect</div>
+<hr />
+<ul>
+<li>In a new browser tab, <a href="http://localhost:5001/customers">preview the transactions route (http://localhost:5001/customers)</a>
+<ul>
+<li>This should be populated with an array of 10 objects for each customer</li>
+</ul>
+</li>
+</ul>
+<caption>1. Expected call to transactions route http://localhost:5001/customers</caption>
+<img src="../../images/006_002_Customers_Route.png" />
+<ul>
+<li>This is the data that our front-end will use to populate the Customers table on the web page</li>
+</ul>
+<hr />
+<ul>
+<li>In the main <a href="http://localhost:5001">Sequel-Mark website (http://localhost:5001)</a>, check the Customers table has been populated</li>
+</ul>
+<caption>2. Expected Customer Table View</caption>
+<img src="../../images/006_002_Customers.png" />
+</section>
+    </main>
+        
+    <footer>
+      
+
+      <h3>
+        <a class="slide__title" href="../slide_001">
+        Database Bootcamp 6
+        </a>
+      </h3>
+
+      <h5 class="slide__copy">
+        <span>© Thomas Steeples 2022</span>
+      </h5>
+
+
+      <p class="slide-number">Slide 51</p>
+    </footer>
+  </article>
+  <script src="../../js/app.js"></script>
+</body>
+</html>

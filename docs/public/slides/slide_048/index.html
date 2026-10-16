@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+  </style>
+  <link rel="stylesheet" href="../../css/theme_005.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <title>Slides</title>
+</head>
+<body>
+  <article class="container">
+        <nav>
+      
+      
+      <h3 class="section__title">
+        <a class="slide__title" href="../slide_001">
+        Sequel-Mart
+        </a>
+      </h3>
+      
+      <a class="slide__previous" href="../slide_047/"><</a>
+      <link rel="stylesheet" href="../../css/theme_005.css">
+      <a class="slide__next" href="../slide_049/">></a>
+
+      <h2 class="slide__title">
+        <a class="slide__title" href="../slide_001">
+        Routers
+        </a>
+      </h2>
+
+      <p class="logo">
+        <a class="slide__title" href="../slide_001">
+          <span>(“</span>Manchester<span>”)+<br></span><span>(“</span>Digital<span>”)></span>
+        </a>
+      </p>
+    </nav>
+    <main class=grid-1>
+      <section class="slide__text">
+<h4>Routers and routes</h4>
+<p>As mentioned, the frontend app makes a request to a backend data store which issues a response to display</p>
+<p><strong>Routers</strong> = A pattern where the backend provides perscribed routes to the data that the frontend can call</p>
+<p><strong>Routes</strong> = A URL that the backend returns a result to and the frontend can use to populate the application</p>
+<hr />
+<h5>Request / Response Path</h5>
+<ol>
+<li>The HTML element has a data-url tag with the name of the route's URL page</li>
+<li>The frontend coordinator (data.js) instructs each helper function to get the data from the backend</li>
+<li>An asynchronous request is made for the data from the backend</li>
+<li>The router's coordinator on the backend (app.js)
+<ul>
+<li>Connects to the database</li>
+<li>Decides on the format of the output</li>
+<li>Waits for the frontend to make a request for data</li>
+<li>Calls the route requested by the frontend when a request is made</li>
+</ul>
+</li>
+<li>The route file gets the data with a SQL script</li>
+<li>And sends it back to app.js</li>
+<li>app.js passes the result back to the frontend helper function</li>
+<li>The data is iteratively populated into the HTML element. Once done, it will appear on the web page</li>
+</ol>
+<hr />
+<img class="bg-hidden img-large" src="../../images/005_Router_Path.png" />
+</section>
+    </main>
+        
+    <footer>
+      
+
+      <h3>
+        <a class="slide__title" href="../slide_001">
+        Database Bootcamp 6
+        </a>
+      </h3>
+
+      <h5 class="slide__copy">
+        <span>© Thomas Steeples 2022</span>
+      </h5>
+
+
+      <p class="slide-number">Slide 48</p>
+    </footer>
+  </article>
+  <script src="../../js/app.js"></script>
+</body>
+</html>

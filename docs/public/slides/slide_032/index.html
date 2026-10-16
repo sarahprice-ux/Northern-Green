@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+  </style>
+  <link rel="stylesheet" href="../../css/theme_003.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <title>Slides</title>
+</head>
+<body>
+  <article class="container">
+        <nav>
+      
+      
+      <h3 class="section__title">
+        <a class="slide__title" href="../slide_001">
+        How do we change content?
+        </a>
+      </h3>
+      
+      <a class="slide__previous" href="../slide_031/"><</a>
+      <link rel="stylesheet" href="../../css/theme_003.css">
+      <a class="slide__next" href="../slide_033/">></a>
+
+      <h2 class="slide__title">
+        <a class="slide__title" href="../slide_001">
+        DELETE...
+        </a>
+      </h2>
+
+      <p class="logo">
+        <a class="slide__title" href="../slide_001">
+          <span>(“</span>Manchester<span>”)+<br></span><span>(“</span>Digital<span>”)></span>
+        </a>
+      </p>
+    </nav>
+    <main class=grid-2>
+      <section class="slide__text">
+<h5>Hide records / Prepare for Removal</h5>
+<p>Tell the server that you want to:</p>
+<ul>
+<li>Mark records in a table for deletion (soft-delete)</li>
+<li>Keep it’s cache (any incrementing keys, indexes, data space)</li>
+<li>Some Database Management Systems will remove them completely</li>
+</ul>
+<pre><code>DELETE
+FROM &lt;schema_name&gt;.&lt;table_name&gt;
+WHERE &lt;field1&gt; = &lt;value1&gt;;
+</code></pre>
+<div class="warning">IMPORTANT:</div>
+<div class="warning">- Deleting will remove existing data. Check before committing!</div>
+<div class="warning">- If there is no WHERE clause, every row will be deleted.</div>
+<div class="warning">- Not a pleasant feeling if done unintentionally!</div>
+<h6>stage_Product_Offers</h6>
+<p>Let's remove any offers from the <code>stage_Product_Offers</code> table where:</p>
+<ul>
+<li>The offer started before 1st May 2021</li>
+</ul>
+<pre><code>DELETE
+FROM &quot;sequel-mart-schema&quot;.&quot;stage_Product_Offers&quot;
+WHERE offer_start_date &lt; '2021-05-01';
+</code></pre>
+<p>This removes the 3 offers from our table that started before 1st May 2021</p>
+</section>
+<section class="slide__images">
+<caption>1. All columns of the stage_Product_Offers table</caption>
+<img src="../../images/003_DELETE_stage_Product_Offers_All.png" />
+<caption>2. Delete stage_Product_Offers that started before May 2021</caption>
+<img src="../../images/003_DELETE_stage_Product_Offers_Before_May_2021.png" />
+<caption>3. Offers that started before May 2021 removed from stage_Product_Offers</caption>
+<img src="../../images/003_DELETE_stage_Product_Offers_Before_May_2021_After.png" />
+</section>
+
+    </main>
+        
+    <footer>
+      
+
+      <h3>
+        <a class="slide__title" href="../slide_001">
+        Database Bootcamp 6
+        </a>
+      </h3>
+
+      <h5 class="slide__copy">
+        <span>© Thomas Steeples 2022</span>
+      </h5>
+
+
+      <p class="slide-number">Slide 32</p>
+    </footer>
+  </article>
+  <script src="../../js/app.js"></script>
+</body>
+</html>

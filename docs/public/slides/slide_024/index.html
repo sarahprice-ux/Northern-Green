@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+  </style>
+  <link rel="stylesheet" href="../../css/theme_002.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <title>Slides</title>
+</head>
+<body>
+  <article class="container">
+        <nav>
+      
+      
+      <h3 class="section__title">
+        <a class="slide__title" href="../slide_001">
+        How do we query a relational database?
+        </a>
+      </h3>
+      
+      <a class="slide__previous" href="../slide_023/"><</a>
+      <link rel="stylesheet" href="../../css/theme_002.css">
+      <a class="slide__next" href="../slide_025/">></a>
+
+      <h2 class="slide__title">
+        <a class="slide__title" href="../slide_001">
+        LEFT OUTER JOIN...
+        </a>
+      </h2>
+
+      <p class="logo">
+        <a class="slide__title" href="../slide_001">
+          <span>(“</span>Manchester<span>”)+<br></span><span>(“</span>Digital<span>”)></span>
+        </a>
+      </p>
+    </nav>
+    <main class=grid-2>
+      <section class="slide__text">
+<h5>Join 2 tables, all values from 1 table, matches only from the other</h5>
+<pre><code>SELECT           l.&lt;field1&gt;, l.&lt;field2&gt;, r.&lt;field1&gt;, r.&lt;field2&gt;
+FROM             &lt;schema_name&gt;.&lt;table_name&gt; | &lt;view_name&gt; AS l
+LEFT OUTER JOIN  &lt;schema_name&gt;.&lt;table_name&gt; | &lt;view_name&gt; AS r
+            ON l.&lt;field1&gt; = r.&lt;field1&gt; AND l.&lt;field2&gt; = r.&lt;field2&gt;;
+</code></pre>
+<h6>Terms</h6>
+<ul>
+<li><code>LEFT OUTER JOIN</code> = Returns all rows from the left table, and the matching rows from the right table</li>
+</ul>
+<hr />
+<h5>INNER JOIN vs LEFT OUTER JOIN</h5>
+<p>Let's join <code>Sales_Header</code> to <code>Customers</code> again but this time:</p>
+<ul>
+<li>We'll put the <code>Customer</code> table first</li>
+<li>We'll filter for customers with the first name Amelie</li>
+</ul>
+<pre><code>SELECT *
+FROM &quot;sequel-mart-schema&quot;.&quot;Customers&quot; AS cu
+INNER JOIN &quot;sequel-mart-schema&quot;.&quot;Sales_Header&quot; AS sh 
+    ON cu.customer_id = sh.customer_id
+WHERE cu.customer_name LIKE 'Amelie%';
+</code></pre>
+<p>This returns 5 transactions</p>
+<ul>
+<li>All for 'Amelie R.D.S'.</li>
+</ul>
+<p>Now let's apply a <code>LEFT OUTER JOIN</code> to this query:</p>
+<pre><code>SELECT *
+FROM &quot;sequel-mart-schema&quot;.&quot;Customers&quot; AS cu
+LEFT OUTER JOIN &quot;sequel-mart-schema&quot;.&quot;Sales_Header&quot; AS sh 
+    ON cu.customer_id = sh.customer_id
+WHERE cu.customer_name LIKE 'Amelie%';
+</code></pre>
+<p>This time we get 6 transactions</p>
+<ul>
+<li>5 for 'Amelie R.D.S'</li>
+<li>1 for 'Amelie M.W.H' with <code>NULL</code> for the columns in <code>Sales_Header</code></li>
+</ul>
+<h6>What's going on?</h6>
+<ul>
+<li>Amelie M.W.H is a registered customer but has not had a transaction yet</li>
+<li>An <code>INNER JOIN</code> only returns records if they are in both tables</li>
+<li>A <code>LEFT OUTER JOIN</code> forces the query to return all records from the left-hand table</li>
+<li>The left table is the first in the join (<code>Customers</code> in this case)</li>
+<li>So we get one dummy record to acknowledge the record in <code>Customers</code> with <code>NULL</code>s in the right-hand table</li>
+</ul>
+<p>Make sure we're using the right join type to get the result we're expecting</p>
+<h6>Notes:</h6>
+<ul>
+<li><code>NULL</code> is a special placeholder to say the data doesn't exist or is unknown
+<ul>
+<li>You can query for the existence of <code>NULL</code>s with the <code>IS NULL</code> syntax</li>
+<li>For example <code>WHERE sh.sale_id IS NULL</code></li>
+</ul>
+</li>
+<li><code>LEFT OUTER JOIN</code> is the longer form of this type of join</li>
+<li>We can just use <code>LEFT JOIN</code> and the queries would run in the same way</li>
+<li><code>RIGHT OUTER JOIN</code> or <code>RIGHT JOIN</code> returns everything from table <code>b</code> and matches from table <code>a</code></li>
+</ul>
+</section>
+<section class="slide__images">
+<caption>1. LEFT OUTER JOIN returns matches found in BOTH tables only</caption>
+<img src="../../images/002_LEFT_JOIN_Venn.png" />
+<caption>2. Inner Joining Customers to Sales Header for customers called Amelie</caption>
+<img src="../../images/002_INNER_JOIN_cu_sh_amelie.png" />
+<caption>3. Outer Joining Customers to Sales Header for customers called Amelie</caption>
+<img src="../../images/002_LEFT_JOIN_cu_sh_amelie.png" />
+</section>
+<section class="slide__exercises">
+<hr>
+<h4>Exercises:</h4>
+<ol>
+<li>Apart from Amelie M.W.H how many other customers are yet to make a transaction?
+<ul>
+<li>HINT: Add <code>WHERE sh.sale_id IS NULL</code> after your join</li>
+</ul>
+</li>
+</ol>
+</section>
+    </main>
+        
+    <footer>
+      
+
+      <h3>
+        <a class="slide__title" href="../slide_001">
+        Database Bootcamp 6
+        </a>
+      </h3>
+
+      <h5 class="slide__copy">
+        <span>© Thomas Steeples 2022</span>
+      </h5>
+
+
+      <p class="slide-number">Slide 24</p>
+    </footer>
+  </article>
+  <script src="../../js/app.js"></script>
+</body>
+</html>

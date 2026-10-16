@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+  </style>
+  <link rel="stylesheet" href="../../css/theme_002.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <title>Slides</title>
+</head>
+<body>
+  <article class="container">
+        <nav>
+      
+      
+      <h3 class="section__title">
+        <a class="slide__title" href="../slide_001">
+        How do we query a relational database?
+        </a>
+      </h3>
+      
+      <a class="slide__previous" href="../slide_017/"><</a>
+      <link rel="stylesheet" href="../../css/theme_002.css">
+      <a class="slide__next" href="../slide_019/">></a>
+
+      <h2 class="slide__title">
+        <a class="slide__title" href="../slide_001">
+        ORDER BY...
+        </a>
+      </h2>
+
+      <p class="logo">
+        <a class="slide__title" href="../slide_001">
+          <span>(“</span>Manchester<span>”)+<br></span><span>(“</span>Digital<span>”)></span>
+        </a>
+      </p>
+    </nav>
+    <main class=grid-2>
+      <section class="slide__text">
+<h4>Return the data in a specific order</h4>
+<pre><code>SELECT * | &lt;value1&gt;, &lt;value2&gt;
+FROM &lt;table_name&gt;
+ORDER BY &lt;field1&gt; ASC | DESC;
+</code></pre>
+<p>It's like saying: <span> &quot;Hey, PostgreSQL; please can you find this information for me?  It's in this table in this schema.  When you find it, please <strong>sort it by something and read it back in that order</strong>&quot; </span></p>
+<p>For example, if we wanted to return all products and order by least popular:</p>
+<pre><code>SELECT product_id, product_category, product_item, product_variety, popularity
+FROM &quot;sequel-mart-schema&quot;.&quot;Products&quot;
+ORDER BY popularity;
+</code></pre>
+<p>Or most popular:</p>
+<pre><code>SELECT product_id, product_category, product_item, product_variety, popularity
+FROM &quot;sequel-mart-schema&quot;.&quot;Products&quot;
+ORDER BY popularity DESC;
+</code></pre>
+<p>Note the <code>DESC</code> on the end of the second statement.</p>
+<ul>
+<li><code>DESC</code> shows we are sorting by popularity in descending order.</li>
+<li>We could add <code>ASC</code> at the end of the first statement but <code>ORDER BY</code> orders ascending by default so this is not required</li>
+</ul>
+<h5>Combining with WHERE...</h5>
+<p>If we want to know the highest and lowest values for a specific subset of the data we can combine them with the <code>WHERE</code> clause</p>
+<h5>Advice for usage</h5>
+<ul>
+<li>While <code>ORDER BY</code> is useful, it is discouraged for large-scale production environments:</li>
+<li>Sorting tends to be resource intensive on very large tables</li>
+<li>It is a bottleneck in the execution plan</li>
+<li>Front-end systems are often better at sorting data once it's been pulled in</li>
+</ul>
+</section>
+<section class="slide__images">
+    <caption>1. List of products, least popular first</caption>
+    <img src="../../images/002_ORDER_Products_Pop_Asc.png" />
+    <caption>2. List of products, most popular first</caption>
+    <img src="../../images/002_ORDER_Products_Pop_Desc.png" />
+</section>
+<section class="slide__exercises">
+<hr>
+<h4>Exercises:</h4>
+<ol>
+<li>When did the first customer and last customer join us?</li>
+<li>What is the most expensive wholesale_price for products that are not sold by the kg?</li>
+<li>What is the most expensive unit_sales_price for products that have a popularity below 65?</li>
+<li>What is the lowest revenue for a sale (Sales_Detail) where there were more than 6 items_sold AND the cost_of_sales was more than 10?</li>
+</ol>
+</section>
+    </main>
+        
+    <footer>
+      
+
+      <h3>
+        <a class="slide__title" href="../slide_001">
+        Database Bootcamp 6
+        </a>
+      </h3>
+
+      <h5 class="slide__copy">
+        <span>© Thomas Steeples 2022</span>
+      </h5>
+
+
+      <p class="slide-number">Slide 18</p>
+    </footer>
+  </article>
+  <script src="../../js/app.js"></script>
+</body>
+</html>

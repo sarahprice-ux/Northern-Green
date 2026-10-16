@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+  </style>
+  <link rel="stylesheet" href="../../css/theme_002.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <title>Slides</title>
+</head>
+<body>
+  <article class="container">
+        <nav>
+      
+      
+      <h3 class="section__title">
+        <a class="slide__title" href="../slide_001">
+        How do we query a relational database?
+        </a>
+      </h3>
+      
+      <a class="slide__previous" href="../slide_012/"><</a>
+      <link rel="stylesheet" href="../../css/theme_002.css">
+      <a class="slide__next" href="../slide_014/">></a>
+
+      <h2 class="slide__title">
+        <a class="slide__title" href="../slide_001">
+        Sequel-Mart database
+        </a>
+      </h2>
+
+      <p class="logo">
+        <a class="slide__title" href="../slide_001">
+          <span>(“</span>Manchester<span>”)+<br></span><span>(“</span>Digital<span>”)></span>
+        </a>
+      </p>
+    </nav>
+    <main class=grid-2>
+      <section class="slide__text">
+<p>Now that we have a better idea of data types and how to use <code>SELECT</code>, it's time to query some stored data!</p>
+<h5>Introducing our Sequel-Mart database</h5>
+<p>This database stores information about our business in the following 6 tables:</p>
+<ul>
+<li>Customers - <span>One row per registered customer who has made a purchase</span></li>
+<li>Dates - <span>One row per day. Various attributes about each date from 01/01/2020 to 31/12/2023 </span></li>
+<li>Products - <span>One row per product available for sale by Sequel-Mart</span></li>
+<li>Sales_Detail - <span>One row per basket of products bought per transaction</span></li>
+<li>Sales_Head - <span>One row per transaction completed by a customer in a store</span></li>
+<li>Stores - <span>One row per store in which a customer can make a transaction</span></li>
+</ul>
+<p>The columns in each table can be found by:</p>
+<ul>
+<li>On the Browser panel on the left, find <code>Tables</code></li>
+<li>Expand this and expand a table to see the list of columns</li>
+</ul>
+<h5>Entity Relationship</h5>
+<ul>
+<li>It's common to map out how the tables in a database <strong>relate</strong> to each others</li>
+<li>This will help later on when we want to return information stored in multiple tables in one query</li>
+</ul>
+<caption>1. Sequel-Mart's database schema</caption>
+<img src="../../images/002_Sequel_Mart_Schema.png" />
+<h5>Design considerations</h5>
+<ul>
+<li>Relational tables tend to be designed to store <strong>attributes relating to one distinct category</strong></li>
+<li><strong>Keys or IDs</strong> are made available so we can <strong>relate or join</strong> these tables together
+<ul>
+<li>Each product is given an ID of <code>product_id</code> (e.g. Alstromeria is given an ID of 1)</li>
+<li>This <code>product_id</code> is referenced by the <code>product_id</code> column in the <code>Sales_Detail</code> table</li>
+<li>The product only appears once in the <code>Products</code> table</li>
+<li>However it can appear many times in the <code>Sales_Detail</code> table</li>
+<li>Therefore it makes sense to only store the ID of the product in <code>Sales_Detail</code>
+<ul>
+<li>It will take up less storage space</li>
+<li>Any changes to a product's attributes only need to take in the <code>Products</code> table</li>
+<li>It will eliminate potential inconsistencies from product data repeated in <code>Sales_Detail</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section class="slide__images">
+<caption>2. PostgreSQL's table and column list (Products table)</caption>
+<img src="../../images/002_DESIGN_Table_List.png" />
+</section>
+    </main>
+        
+    <footer>
+      
+
+      <h3>
+        <a class="slide__title" href="../slide_001">
+        Database Bootcamp 6
+        </a>
+      </h3>
+
+      <h5 class="slide__copy">
+        <span>© Thomas Steeples 2022</span>
+      </h5>
+
+
+      <p class="slide-number">Slide 13</p>
+    </footer>
+  </article>
+  <script src="../../js/app.js"></script>
+</body>
+</html>

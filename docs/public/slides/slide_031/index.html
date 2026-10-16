@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+  </style>
+  <link rel="stylesheet" href="../../css/theme_003.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <title>Slides</title>
+</head>
+<body>
+  <article class="container">
+        <nav>
+      
+      
+      <h3 class="section__title">
+        <a class="slide__title" href="../slide_001">
+        How do we change content?
+        </a>
+      </h3>
+      
+      <a class="slide__previous" href="../slide_030/"><</a>
+      <link rel="stylesheet" href="../../css/theme_003.css">
+      <a class="slide__next" href="../slide_032/">></a>
+
+      <h2 class="slide__title">
+        <a class="slide__title" href="../slide_001">
+        UPDATE... (Multiple tables)
+        </a>
+      </h2>
+
+      <p class="logo">
+        <a class="slide__title" href="../slide_001">
+          <span>(“</span>Manchester<span>”)+<br></span><span>(“</span>Digital<span>”)></span>
+        </a>
+      </p>
+    </nav>
+    <main class=grid-2>
+      <section class="slide__text">
+<h5>We're ready to apply the discounts to our Sales_Detail table</h5>
+<p>If we have a look at our <code>Sales_Detail</code> table there are columns for:</p>
+<ul>
+<li><code>discount</code></li>
+<li><code>revenue_net</code></li>
+</ul>
+<pre><code>SELECT *
+FROM &quot;sequel-mart-schema&quot;.&quot;Sales_Detail&quot;
+LIMIT 50;
+</code></pre>
+<p>We need to update these columns to reflect offers that applied to them.</p>
+<div class="warning">Obviously in the real world, this would be applied at the time of sale</div>
+<h6>How do we do that?</h6>
+<p>We need to:</p>
+<ul>
+<li>Identify the products:
+<ul>
+<li>The offers apply to</li>
+<li>When the offers applied (the date range)</li>
+</ul>
+</li>
+<li>Find the transactions where an offer was active for that product</li>
+<li>Apply the discount for those transactions as specified in <code>Product_Offers</code></li>
+</ul>
+<h6>Where do we find this information?</h6>
+<p>Four tables each hold pieces to this puzzle so let's go through the requirements slowly.</p>
+<p>If we start with the Entity Relationship Diagram updated to include:</p>
+<ul>
+<li>The <code>Product_Offers</code> table</li>
+<li>Ability to join to <code>Products</code> and <code>Sales_Detail</code> on their <code>product_id</code> columns</li>
+</ul>
+<caption>Updated ERD, including the Product_Offers table</caption>
+<img src="../../images/002_Sequel_Mart_Schema_Inc_Product_Offers.png" />
+<br />
+<hr />
+<h6>We'll definitely need to know information about:</h6>
+<ol>
+<li>Products
+<ul>
+<li>How much revenue was made in the transaction? (<code>Sales_Detail</code>.<code>revenue</code>)</li>
+<li>What was the discount on offer? (<code>Product_Offers</code>.<code>offer_discount_percentage</code>)</li>
+</ul>
+</li>
+</ol>
+<p>If we join <code>Sales_Detail</code>, <code>Products</code> and <code>Product_Offers</code> we get a query like this:</p>
+<pre><code>SELECT sd.sale_detail_id, sd.revenue
+	, po.offer_name, po.offer_discount_percentage
+FROM &quot;sequel-mart-schema&quot;.&quot;Sales_Detail&quot; AS sd
+INNER JOIN &quot;sequel-mart-schema&quot;.&quot;Product_Offers&quot; AS po ON sd.product_id = po.product_id
+LIMIT 50;
+</code></pre>
+<hr />
+<ol start="2">
+<li>Dates
+<ul>
+<li>When did the transaction happen? (<code>Sales_Header</code>.<code>date_id</code>)</li>
+<li>What was the calendar date? (<code>Dates</code>.<code>date_alt</code>)</li>
+<li>Was the transaction date and product discounted? (<code>Product_Offers</code>.<code>offer_start_date</code>)</li>
+</ul>
+</li>
+</ol>
+<p>If we add <code>Sales_Header</code> and <code>Dates</code> to our query it should look something like this:</p>
+<pre><code>SELECT sd.sale_detail_id, sd.revenue
+	, po.offer_name, po.offer_discount_percentage
+	, sh.date_id
+	, dt.date_alt
+FROM &quot;sequel-mart-schema&quot;.&quot;Sales_Detail&quot; AS sd
+INNER JOIN &quot;sequel-mart-schema&quot;.&quot;Product_Offers&quot; AS po ON sd.product_id = po.product_id
+INNER JOIN &quot;sequel-mart-schema&quot;.&quot;Sales_Header&quot; AS sh ON sh.sale_id = sd.sale_id
+INNER JOIN &quot;sequel-mart-schema&quot;.&quot;Dates&quot; AS dt ON dt.date_id = sh.date_id
+LIMIT 50;
+</code></pre>
+<hr />
+<p>We're getting there.  The final problem is to solve is:</p>
+<ul>
+<li>Ensuring that discounts are only applied between their start and end dates</li>
+</ul>
+<p>We can solve that by adding a <code>WHERE</code> clause that only includes rows if:</p>
+<ul>
+<li>The sales date falls <code>BETWEEN</code> the offer start and end date</li>
+</ul>
+<p><span>We can remove: </span></p>
+<ul>
+<li><span><code>sh.date_id</code> (This was only there to prove the join worked between <code>Sales_Header</code> and <code>Dates</code>)</span></li>
+</ul>
+<p>This gives us a final list of 142 transactions that are valid for applying a discount</p>
+<pre><code>SELECT sd.sale_detail_id, sd.revenue
+	, po.offer_name, po.offer_discount_percentage
+	, dt.date_alt
+FROM &quot;sequel-mart-schema&quot;.&quot;Sales_Detail&quot; AS sd
+INNER JOIN &quot;sequel-mart-schema&quot;.&quot;Product_Offers&quot; AS po ON sd.product_id = po.product_id
+INNER JOIN &quot;sequel-mart-schema&quot;.&quot;Sales_Header&quot; AS sh ON sh.sale_id = sd.sale_id
+INNER JOIN &quot;sequel-mart-schema&quot;.&quot;Dates&quot; AS dt ON dt.date_id = sh.date_id
+WHERE dt.date_alt BETWEEN po.offer_start_date AND po.offer_end_date;
+</code></pre>
+<h6>Calculating the discount</h6>
+<p>If we take <code>sale_detail_id</code> of 60 as an example:</p>
+<ul>
+<li><code>revenue</code> = £2.28 <span>(£0.76 unit_sales_price * 3 items_sold)<span></li>
+<li><code>offer_discount_percentage</code> = 7.00% <span>(divide by 100 to get the calculation value 0.07)</span></li>
+</ul>
+<p>Therefore:</p>
+<ul>
+<li><code>discount</code> = £0.16 <span>(should be £2.28 * 0.07 (7.00% / 100))</span>
+<ul>
+<li><code>sd.revenue * (po.offer_discount_percentage / 100) AS discount</code></li>
+</ul>
+</li>
+<li><code>revenue_net</code> = £2.12 <span>(£2.28 - £0.16)</span>
+<ul>
+<li><code>sd.revenue - (sd.revenue * (po.offer_discount_percentage / 100)) AS revenue_net</code></li>
+</ul>
+</li>
+</ul>
+<p><span>We can add those two columns and we can remove: </span></p>
+<ul>
+<li><span><code>po.offer_name</code> (Not needed in the final calculation)</span></li>
+<li><span><code>po.offer_discount_percentage</code> (Not needed in the final calculation)</span></li>
+<li><span><code>dt.date_alt</code> (Not needed in the final calculation)</span></li>
+</ul>
+<hr />
+<h6>Writing the UPDATE statement</h6>
+<p>There is a lot to unpack in the final statement:</p>
+<pre><code>UPDATE &quot;sequel-mart-schema&quot;.&quot;Sales_Detail&quot; AS sd
+SET discount = disc.discount
+	, revenue_net = disc.revenue_net
+FROM
+(
+	SELECT sd.sale_detail_id
+		, sd.revenue * (po.offer_discount_percentage / 100) AS discount
+		, sd.revenue - (sd.revenue * (po.offer_discount_percentage / 100)) AS revenue_net
+	FROM &quot;sequel-mart-schema&quot;.&quot;Sales_Detail&quot; AS sd
+	INNER JOIN &quot;sequel-mart-schema&quot;.&quot;Product_Offers&quot; AS po ON sd.product_id = po.product_id
+	INNER JOIN &quot;sequel-mart-schema&quot;.&quot;Sales_Header&quot; AS sh ON sh.sale_id = sd.sale_id
+	INNER JOIN &quot;sequel-mart-schema&quot;.&quot;Dates&quot; AS dt ON dt.date_id = sh.date_id
+	WHERE dt.date_alt BETWEEN po.offer_start_date AND po.offer_end_date
+) AS disc
+WHERE sd.sale_detail_id = disc.sale_detail_id;
+</code></pre>
+<p>Let's go through each section:</p>
+<p><code>UPDATE</code></p>
+<ul>
+<li>The table we want to update (<code>&quot;sequel-mart-schema&quot;.&quot;Sales_Detail&quot;</code>)</li>
+<li>Aliased <code>sd</code> to shorten the reference in the <code>WHERE</code> clause</li>
+</ul>
+<p><code>SET</code></p>
+<ul>
+<li>Apply the calculations above for <code>discount</code> and <code>revenue_net</code></li>
+<li>We are using the calculations in the sub-query (aliased <code>disc</code>)</li>
+</ul>
+<p><code>FROM</code></p>
+<ul>
+<li>Earlier we looked at sub-queries.</li>
+<li>We can package our final <code>SELECT</code> between brackets and alias it as another <code>FROM</code></li>
+<li>This separates the table we want to <code>UPDATE</code> from the logic we want to apply</li>
+<li>We don't need to reference any columns other than:
+<ul>
+<li><code>sale_detail_id</code> for joining to the <code>Sale_Detail</code> table we're updating</li>
+<li><code>discount</code> and <code>revenue_net</code> as these are the columns we're updating</li>
+</ul>
+</li>
+<li>The 5 tables and joins are the same as the final query we worked out</li>
+</ul>
+<hr />
+<pre><code>SELECT *
+FROM &quot;sequel-mart-schema&quot;.&quot;Sales_Detail&quot;
+ORDER BY sale_detail_id;
+</code></pre>
+<p>Now if we query <code>Sales_Detail</code> and scroll down, the first discounts are:</p>
+<ul>
+<li><code>sale_detail_id</code> 60
+<ul>
+<li>Sale date = 29th May 2021</li>
+<li>Product = 76 (Savoy Cabbage)</li>
+<li>Offer ID = 7 (Valid on product id 76 between 4th May and 1st July 2021)</li>
+<li>Discount = 7.00% (£2.28 * 0.07 = £0.16)</li>
+</ul>
+</li>
+<li><code>sale_detail_id</code> 73
+<ul>
+<li>Sale date = 13th July 2021</li>
+<li>Product = 51 (Victoria Plums)</li>
+<li>Offer ID = 11 (Valid on product id 51 between 4th May and 1st July 2021)</li>
+<li>Discount = 7.08% (£15.84 * 0.0708 = £1.12)</li>
+</ul>
+</li>
+</ul>
+<hr />
+<p>This section brings together some of the concepts we've learned so far</p>
+<p>It is complicated at first so please feel free to come back here later on and practice further</p>
+</section>
+<section class="slide__images">
+<caption>1. All columns of the Sales_Detail table</caption>
+<img src="../../images/003_UPDATE_Sales_Detail_Product_Offers_Sales_Details_All.png" />
+<caption>2. Sales_Detail joined to Products and Discounts (Green line = table separation)</caption>
+<img src="../../images/003_UPDATE_Sales_Detail_Product_Offers_Step_1.png" />
+<caption>3. Date information added to the above query</caption>
+<img src="../../images/003_UPDATE_Sales_Detail_Product_Offers_Step_2.png" />
+<caption>4. UPDATE query executed</caption>
+<img src="../../images/003_UPDATE_Sales_Detail_Product_Offers_Step_3.png" />
+<caption>5. Sales_Detail with discounts applied</caption>
+<img src="../../images/003_UPDATE_Sales_Detail_Product_Offers_Finished.png" />
+</section>
+
+    </main>
+        
+    <footer>
+      
+
+      <h3>
+        <a class="slide__title" href="../slide_001">
+        Database Bootcamp 6
+        </a>
+      </h3>
+
+      <h5 class="slide__copy">
+        <span>© Thomas Steeples 2022</span>
+      </h5>
+
+
+      <p class="slide-number">Slide 31</p>
+    </footer>
+  </article>
+  <script src="../../js/app.js"></script>
+</body>
+</html>

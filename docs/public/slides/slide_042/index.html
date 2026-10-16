@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+  </style>
+  <link rel="stylesheet" href="../../css/theme_004.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <title>Slides</title>
+</head>
+<body>
+  <article class="container">
+        <nav>
+      
+      
+      <h3 class="section__title">
+        <a class="slide__title" href="../slide_001">
+        How do we change content?
+        </a>
+      </h3>
+      
+      <a class="slide__previous" href="../slide_041/"><</a>
+      <link rel="stylesheet" href="../../css/theme_004.css">
+      <a class="slide__next" href="../slide_043/">></a>
+
+      <h2 class="slide__title">
+        <a class="slide__title" href="../slide_001">
+        CREATE VIEW...
+        </a>
+      </h2>
+
+      <p class="logo">
+        <a class="slide__title" href="../slide_001">
+          <span>(“</span>Manchester<span>”)+<br></span><span>(“</span>Digital<span>”)></span>
+        </a>
+      </p>
+    </nav>
+    <main class=grid-2>
+      <section class="slide__text">
+<h4>Create a 'copy' of another SQL query</h4>
+<pre><code>CREATE VIEW &lt;schema_name&gt;.v_&lt;view_name&gt;
+AS
+SELECT &lt;field1&gt;, &lt;field2&gt;
+FROM &lt;table1&gt;;
+</code></pre>
+<p>The view can then be used in the <code>FROM</code> statement of an SQL query</p>
+<p>Prefixing a view with <code>v_</code> makes it clear that it is a view rather than a permanent table</p>
+<h6>Example</h6>
+<p>If we want to know more about the products on offer and their popularity, we could run the following query:</p>
+<pre><code>SELECT po.offer_id, po.offer_name, po.offer_discount_percentage
+    , po.offer_start_date, po.offer_end_date
+	, pr.product_id, pr.product_category, pr.product_item
+    , pr.product_variety, pr.popularity
+FROM &quot;sequel-mart-schema&quot;.&quot;Product_Offers&quot; AS po
+INNER JOIN &quot;sequel-mart-schema&quot;.&quot;Products&quot; AS pr
+	ON pr.product_id = po.product_id;
+</code></pre>
+<p>If we found we wanted this information in many different places in a project, we could save the script as a View called <code>v_Product_Offers_And_Products</code> in our schema as follows:</p>
+<pre><code>CREATE VIEW &quot;sequel-mart-schema&quot;.v_Product_Offers_And_Products
+AS
+SELECT po.offer_id, po.offer_name, po.offer_discount_percentage, po.offer_start_date, po.offer_end_date
+	, pr.product_id, pr.product_category, pr.product_item, pr.product_variety, pr.popularity
+FROM &quot;sequel-mart-schema&quot;.&quot;Product_Offers&quot; AS po
+INNER JOIN &quot;sequel-mart-schema&quot;.&quot;Products&quot; AS pr
+	ON pr.product_id = po.product_id;
+</code></pre>
+<p>We can now query this <code>VIEW</code> as though it was just another table:</p>
+<pre><code>SELECT *
+FROM &quot;sequel-mart-schema&quot;.v_Product_Offers_And_Products;
+</code></pre>
+<hr />
+<h5>Reasons to use Views</h5>
+<ul>
+<li>Shortens code for frequently used queries</li>
+<li>Promotes consistently used code between developers</li>
+<li>Views can be given different security policies, so it can be a safer approach</li>
+<li>Hides more of the inner workings of the database from the frontend</li>
+</ul>
+<hr />
+<h5>Source SQL code for a VIEW</h5>
+<p>If we want to go back to a <code>VIEW</code> later and remind ourselves how it was created we can:</p>
+<ul>
+<li>Right-click on the <code>VIEW</code> name in the Browser tab</li>
+<li>Click 'Properties...'</li>
+<li>Click the 'Code' tab on the pop-up that appears</li>
+</ul>
+<p>We can make a change to the <code>VIEW</code> in this Code pop-up and save it.</p>
+<p>For example, let's
+- Add the <code>unit_sales_price</code> column to the <code>VIEW</code>
+- Remove any offers that ended before 1st August 2021</p>
+<p>Our SQL script now looks like this in the window:</p>
+<pre><code> SELECT po.offer_id,
+    po.offer_name,
+    po.offer_discount_percentage,
+    po.offer_start_date,
+    po.offer_end_date,
+    pr.product_id,
+    pr.product_category,
+    pr.product_item,
+    pr.product_variety,
+    pr.popularity,
+    pr.unit_sales_price
+   FROM &quot;sequel-mart-schema&quot;.&quot;Product_Offers&quot; po
+     JOIN &quot;sequel-mart-schema&quot;.&quot;Products&quot; pr ON pr.product_id = po.product_id
+   WHERE po.offer_end_date &gt; '2021-08-01';
+</code></pre>
+<ul>
+<li>Click 'Save'</li>
+<li>We may get a message warning us that the <code>VIEW</code> will be dropped and recreated
+<ul>
+<li>If we have other objects in our database dependent on this <code>VIEW</code>, they may need to be dropped first and re-added</li>
+<li>Click 'Yes' if this message appears</li>
+</ul>
+</li>
+<li>If we query our <code>VIEW</code> again, the changes have been applied:
+<ul>
+<li>The <code>unit_sales_price</code> column has been added</li>
+<li>We are only seeing the 8 offers since 1st August 2021</li>
+</ul>
+</li>
+</ul>
+<pre><code>SELECT *
+FROM &quot;sequel-mart-schema&quot;.v_Product_Offers_And_Products;
+</code></pre>
+<hr />
+<h5>Dropping a VIEW</h5>
+<p>We can remove a <code>VIEW</code> using the <code>DROP</code> syntax.</p>
+<p>If we wanted to remove our view we could say:</p>
+<pre><code>DROP VIEW &quot;sequel-mart-schema&quot;.v_Product_Offers_And_Products;
+</code></pre>
+<div class="warning">Views depend on their tables. If you want to drop a table, any view that references that table will need to be dropped first</div>
+</section>
+<section class="slide__images">
+<caption>1. Location of VIEWs on the browser tab</caption>
+<img src="../../images/004_Views_Location_Browser.png" />
+<caption>2. Query we want to save as a VIEW</caption>
+<img src="../../images/004_Views_SELECT.png" />
+<caption>3. Scripting the query as a CREATE VIEW</caption>
+<img src="../../images/004_Views_CREATE_VIEW.png" />
+<caption>4. The new VIEW is in the browser tab</caption>
+<img src="../../images/004_Views_Location_Browser_After.png" />
+<caption>5. Query the VIEW directly</caption>
+<img src="../../images/004_Views_VIEW_SELECT.png" />
+<caption>6. Accessing the Properties...</caption>
+<img src="../../images/004_Views_Properties.png" />
+<caption>7. Source SQL Code in Properties... > Code</caption>
+<img src="../../images/004_Views_Properties_Code.png" />
+<caption>8. Source SQL Code with changes</caption>
+<img src="../../images/004_Views_Properties_Code_Changes.png" />
+<caption>9. Source SQL Code changed, warning message</caption>
+<img src="../../images/004_Views_Properties_Code_Warning.png" />
+<caption>10. Querying the changed VIEW directly</caption>
+<img src="../../images/004_Views_SELECT_After_Changes.png" />
+</section>
+
+    </main>
+        
+    <footer>
+      
+
+      <h3>
+        <a class="slide__title" href="../slide_001">
+        Database Bootcamp 6
+        </a>
+      </h3>
+
+      <h5 class="slide__copy">
+        <span>© Thomas Steeples 2022</span>
+      </h5>
+
+
+      <p class="slide-number">Slide 42</p>
+    </footer>
+  </article>
+  <script src="../../js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+services:
+  database:
+    image: "postgres" # use latest official postgres version
+    env_file:
+      - database.env # configure postgres
+    volumes:
+      - database-data:/var/lib/postgresql # persist data even if container shuts down
+    ports:
+      - "5433:5432"
+  populate-database:
+    profiles:
+      - initialise
+    image: 'postgres'
+    depends_on:
+      - database
+    volumes:
+      - ./database_backups:/database_backups
+    restart: 'no'
+    entrypoint: [ "bash", "-c", " sleep 5 && pg_restore --dbname=postgresql://postgres:MDigital21@database:5432/sequel-mart /database_backups/db_dump_2026"]
+  app:
+    image: 'node:8' # see https://github.com/nodejs/docker-node/blob/main/README.md#how-to-use-this-image
+    user: 'node'
+    depends_on:
+      - database
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - .:/home/node/app
+    ports:
+      - '5001:5000'
+    command: 'npm run dev'
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    depends_on:
+      - database
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@domain.com
+      PGADMIN_DEFAULT_PASSWORD: SuperSecret
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+    ports:
+      - "5050:80"
+    volumes:
+      - ./pgadmin4/servers.json:/pgadmin4/servers.json
+volumes:
+  database-data: # named volumes can be managed easier using docker-compose

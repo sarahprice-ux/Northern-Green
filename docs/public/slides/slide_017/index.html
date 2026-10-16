@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+  </style>
+  <link rel="stylesheet" href="../../css/theme_002.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <title>Slides</title>
+</head>
+<body>
+  <article class="container">
+        <nav>
+      
+      
+      <h3 class="section__title">
+        <a class="slide__title" href="../slide_001">
+        How do we query a relational database?
+        </a>
+      </h3>
+      
+      <a class="slide__previous" href="../slide_016/"><</a>
+      <link rel="stylesheet" href="../../css/theme_002.css">
+      <a class="slide__next" href="../slide_018/">></a>
+
+      <h2 class="slide__title">
+        <a class="slide__title" href="../slide_001">
+        Nested Statements
+        </a>
+      </h2>
+
+      <p class="logo">
+        <a class="slide__title" href="../slide_001">
+          <span>(“</span>Manchester<span>”)+<br></span><span>(“</span>Digital<span>”)></span>
+        </a>
+      </p>
+    </nav>
+    <main class=grid-2>
+      <section class="slide__text">
+<h5>Nesting</h5>
+<pre><code>SELECT &lt;field1&gt;, &lt;field2&gt;
+FROM
+    (SELECT &lt;field1&gt;, &lt;field2&gt;
+     FROM &lt;schema_name&gt;.&lt;table_name&gt;
+    ) AS &lt;alias1&gt;
+</code></pre>
+<p>SQL statements can be nested inside one another</p>
+<p>The result of the inner statement forms the data set which is fed to the outer table</p>
+<p>Sub-queries can appear inside a SELECT, FROM or WHERE clause</p>
+<p>They are similar to a function calling another function</p>
+<p>For example:</p>
+<pre><code>SELECT 'Summary' AS Title
+	, sub_query.*
+	, popularity + 5 AS popularity_plus
+FROM
+(
+	SELECT product_id, product_item, popularity
+	FROM &quot;sequel-mart-schema&quot;.&quot;Products&quot;
+	WHERE popularity &gt; 80
+) AS sub_query
+WHERE popularity + 5 &gt; 90;
+</code></pre>
+<h6>Sub query (executed first)</h6>
+<pre><code>...
+(
+	SELECT product_id, product_item, popularity
+	FROM &quot;sequel-mart-schema&quot;.&quot;Products&quot;
+	WHERE popularity &gt; 80
+)
+...
+</code></pre>
+<ul>
+<li>We are extracting 3 columns from the <code>Products</code> table</li>
+<li>We are applying a filter on <code>popularity</code></li>
+<li>This sub query <strong>must be aliased</strong> (<code>AS sub_query</code> in this case)</li>
+<li>We get a 3 column/12 row result</li>
+<li>This forms the <code>FROM</code> clause for the main query</li>
+</ul>
+<h6>Main query (executed last)</h6>
+<p>The outer <code>SELECT</code> demonstrates:</p>
+<ul>
+<li>Passing in a static value ('Summary')</li>
+<li>Returning all columns in the sub-query (<code>, sub_query.*</code>)</li>
+<li>Applying an arithmetic operation <code>popularity + 5</code></li>
+<li>Applying a further <code>WHERE</code> comparison operator to the main query (<code>popularity + 5 &gt; 90</code>)</li>
+</ul>
+</section>
+<section class="slide__images">
+<caption>1. Nested SELECT (Sub Query)</caption>
+<img src="../../images/002_Nested_SELECT_Sub_Query_Example.png" />
+<caption>1. Nested SELECT (Main Query)</caption>
+<img src="../../images/002_Nested_SELECT_Example.png" />
+</section>
+    </main>
+        
+    <footer>
+      
+
+      <h3>
+        <a class="slide__title" href="../slide_001">
+        Database Bootcamp 6
+        </a>
+      </h3>
+
+      <h5 class="slide__copy">
+        <span>© Thomas Steeples 2022</span>
+      </h5>
+
+
+      <p class="slide-number">Slide 17</p>
+    </footer>
+  </article>
+  <script src="../../js/app.js"></script>
+</body>
+</html>

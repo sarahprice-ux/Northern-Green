@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+  </style>
+  <link rel="stylesheet" href="../../css/theme_004.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <title>Slides</title>
+</head>
+<body>
+  <article class="container">
+        <nav>
+      
+      
+      <h3 class="section__title">
+        <a class="slide__title" href="../slide_001">
+        How do we change content?
+        </a>
+      </h3>
+      
+      <a class="slide__previous" href="../slide_039/"><</a>
+      <link rel="stylesheet" href="../../css/theme_004.css">
+      <a class="slide__next" href="../slide_041/">></a>
+
+      <h2 class="slide__title">
+        <a class="slide__title" href="../slide_001">
+        CREATE INDEX...
+        </a>
+      </h2>
+
+      <p class="logo">
+        <a class="slide__title" href="../slide_001">
+          <span>(“</span>Manchester<span>”)+<br></span><span>(“</span>Digital<span>”)></span>
+        </a>
+      </p>
+    </nav>
+    <main class=grid-2>
+      <section class="slide__text">
+<h4>Create a (usually smaller) lookup 'copy' of the table</h4>
+<pre><code>CREATE INDEX &lt;index_name&gt;
+ON &lt;table&gt; USING btree | hash
+(field_name1 ASC | DESC, field_name2) NULLS FIRST | LAST
+INCLUDE (&lt;field_name3&gt;, &lt;field_name4&gt;);
+</code></pre>
+<h5>Advantages of Indexes</h5>
+<ul>
+<li><strong>Regular queries</strong> can use this smaller copy. It can make <strong>reads faster</strong></li>
+<li><strong>Cutting out unneeded columns</strong>
+<ul>
+<li>Fewer pages for the engine to read</li>
+<li>Uses less memory &amp; CPU</li>
+</ul>
+</li>
+<li><strong>Sorts</strong> can be <strong>pre-empted</strong> speeding up the query</li>
+<li><strong>Indexes can be filtered</strong> making them even faster when used</li>
+</ul>
+<h5>Disadvantages of Indexes</h5>
+<ul>
+<li>Extra <strong>overhead</strong>. Data changes happen in multiple places (<strong>slower writes</strong>)</li>
+<li>More <strong>storage</strong> space is needed</li>
+<li>Inefficient when used on small tables</li>
+<li>Inefficient on tables with a lot of <code>NULL</code> values</li>
+</ul>
+<hr />
+<p>If we take our previous query and hit <code>F7</code>:</p>
+<pre><code>SELECT sh.date_id, AVG(sd.items_sold)
+FROM &quot;sequel-mart-schema&quot;.&quot;Sales_Header&quot; AS sh
+INNER JOIN &quot;sequel-mart-schema&quot;.&quot;Sales_Detail&quot; AS sd 
+	ON sh.sale_id = sd.sale_id
+WHERE sh.date_sale &gt;= '2021-08-01'
+GROUP BY sh.date_id
+ORDER BY sh.date_id;
+</code></pre>
+<p>We'll get an Execution Plan that shows:</p>
+<ul>
+<li><code>Sales_Head</code> and <code>Sales_Detail</code> being scanned and joining</li>
+<li>Aggregate (to cover the <code>AVG</code>)</li>
+<li>Sort (to cover the <code>ORDER BY</code>)</li>
+</ul>
+<p>If we add <code>EXPLAIN ANALYZE</code> we'll get a summary of timings and costs</p>
+<hr />
+<h5>Add an Index</h5>
+<p>Let's see if we can speed this query up by adding an index:</p>
+<h6>What do we choose?</h6>
+<p>It can involve trial and error but basic guidelines include columns involved in:</p>
+<ul>
+<li>Joins</li>
+<li>Ordering</li>
+<li>Filtering</li>
+<li>Select (more likely to be used in the <code>INCLUDE</code> section)</li>
+</ul>
+<p>If we add an index to <code>Sales_Detail</code> we may want to:</p>
+<ul>
+<li>Put it on the <code>sale_id</code> column as this is involved in the <code>JOIN</code></li>
+<li>Include the <code>items_sold</code> column as this is used in the <code>SELECT</code></li>
+</ul>
+<pre><code>CREATE INDEX sales_detail_sale_id
+  ON &quot;sequel-mart-schema&quot;.&quot;Sales_Detail&quot; (sale_id)
+  INCLUDE (items_sold);
+</code></pre>
+<h6>Checking the Execution Plan</h6>
+<p>Let's have another look at our Execution Plan with <code>F7</code>:</p>
+<pre><code>SELECT sh.date_id, AVG(sd.items_sold)
+FROM &quot;sequel-mart-schema&quot;.&quot;Sales_Header&quot; AS sh
+INNER JOIN &quot;sequel-mart-schema&quot;.&quot;Sales_Detail&quot; AS sd 
+	ON sh.sale_id = sd.sale_id
+WHERE sh.date_sale &gt;= '2021-08-01'
+GROUP BY sh.date_id
+ORDER BY sh.date_id;
+</code></pre>
+<p>We'll see the following differences:</p>
+<ul>
+<li><code>Sales_Detail</code> scans the much smaller index instead</li>
+<li>The 'Hash Join' is now a 'Nested Loop Join'
+<ul>
+<li>Nested Loops are like an Excel 'VLOOKUP' function</li>
+<li>They work best when one table or index is very small</li>
+</ul>
+</li>
+</ul>
+<p>Now if we add <code>EXPLAIN ANALYZE</code> we see the effect on the resources associated with <code>Sales_Detail</code>:</p>
+<table>
+  <tr>
+    <th>Measure</th>
+    <th>Table Scan</th>
+    <th>Index Scan</th>
+  </tr>
+  <tr>
+    <th>...</th>
+    <th>...</th>
+    <th>...</th>
+  </tr>
+  <tr>
+    <th>Preparation</th>
+    <th></th>
+    <th></th>
+  </tr>
+  <tr>
+    <td>Planning Time</td>
+    <td><strong>0.144ms</strong></td>
+    <td>0.346ms</td>
+  </tr>
+  <tr>
+    <th>...</th>
+    <th>...</th>
+    <th>...</th>
+  </tr>
+  <tr>
+    <th>Table / Index</th>
+    <th></th>
+    <th></th>
+  </tr>
+  <tr>
+    <td>Scan Cost (Total)</td>
+    <td>20.50</td>
+    <td><strong>1.83</strong></td>
+  </tr>
+  <tr>
+    <td>Scan Time (Total)</td>
+    <td>0.087ms</td>
+    <td><strong>0.003ms</strong></td>
+  </tr>
+  <tr>
+    <td>Width (Characters)</td>
+    <td>6</td>
+    <td><strong>4</strong></td>
+  </tr>
+  </tr>
+  <tr>
+    <th>...</th>
+    <th>...</th>
+    <th>...</th>
+  </tr>
+  <tr>
+    <th>Hash Join / Nested Loop Join</th>
+    <th></th>
+    <th></th>
+  </tr>
+  <tr>
+    <td>Scan Cost (Total)</td>
+    <td>539.98</td>
+    <td><strong>235.49</strong></td>
+  </tr>
+  <tr>
+    <td>Scan Time (Total)</td>
+    <td>1.966ms</td>
+    <td><strong>0.653ms</strong></td>
+  </tr>
+  <tr>
+  <tr>
+    <th>...</th>
+    <th>...</th>
+    <th>...</th>
+  </tr>
+    <th>Execution</th>
+    <th></th>
+    <th></th>
+  </tr>
+  <tr>
+    <td>Execution Time</td>
+    <td>2.223ms</td>
+    <td><strong>0.981ms</strong></td>
+  </tr>
+</table>
+<p>This index has made the query ~56% faster and uses fewer resources</p>
+<div class="warning">Your results may differ depending on your computer</div>
+<p>It may be worth keeping this index if:</p>
+<ul>
+<li>The extra 'copy' of the data doesn't slow down <code>INSERTS</code>, <code>UPDATES</code> and <code>DELETES</code> considerably</li>
+<li>The query is likely to be run a lot.  It's often not worth keeping indexes for infrequently run queries</li>
+</ul>
+<p><strong>Notes:</strong></p>
+<ul>
+<li>These costings and times are small because the tables are small
+<ul>
+<li>They scale up and become noticable when a table contains millions or even billions of records</li>
+</ul>
+</li>
+<li>There is usually more</li>
+<li>'Planning Time' is slowed because indexes give PostgreSQL more options to consider
+<ul>
+<li>Balance whether this extra Planning Time is more than made up for by a quicker 'Execution Time'</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h5>Dropping an Index</h5>
+<p>You can use the <code>DROP INDEX</code> command to remove an index</p>
+<pre><code>DROP INDEX &lt;schema_name&gt;.&lt;index_name&gt;;
+</code></pre>
+<p>For example, to drop the index we've just created run:</p>
+<pre><code>DROP INDEX &quot;sequel-mart-schema&quot;.sales_detail_sale_id;
+</code></pre>
+</section>
+<section class="slide__images">
+<caption>1. Execution Plan (No Index)</caption>
+<img src="../../images/004_Indexes_SELECT_NO_INDEX.png" />
+<caption>2. EXPLAIN ANALYZE (No Index)</caption>
+<img src="../../images/004_Indexes_EXPLAIN_NO_INDEX.png" />
+<caption>3. CREATE INDEX ON Sale_Detail</caption>
+<img src="../../images/004_Indexes_CREATE.png" />
+<caption>4. Execution Plan (Index Included)</caption>
+<img src="../../images/004_Indexes_SELECT_INDEX.png" />
+<caption>5. EXPLAIN ANALYZE (Index Included)</caption>
+<img src="../../images/004_Indexes_EXPLAIN_INDEX.png" />
+<caption>6. Drop Index</caption>
+<img src="../../images/004_Indexes_DROP.png" />
+</section>
+
+    </main>
+        
+    <footer>
+      
+
+      <h3>
+        <a class="slide__title" href="../slide_001">
+        Database Bootcamp 6
+        </a>
+      </h3>
+
+      <h5 class="slide__copy">
+        <span>© Thomas Steeples 2022</span>
+      </h5>
+
+
+      <p class="slide-number">Slide 40</p>
+    </footer>
+  </article>
+  <script src="../../js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+  </style>
+  <link rel="stylesheet" href="../../css/theme_001.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <title>Slides</title>
+</head>
+<body>
+  <article class="container">
+        <nav>
+      
+      
+      <h3 class="section__title">
+        <a class="slide__title" href="../slide_001">
+        Setting Up
+        </a>
+      </h3>
+      
+      <a class="slide__previous" href="../slide_004/"><</a>
+      <link rel="stylesheet" href="../../css/theme_001.css">
+      <a class="slide__next" href="../slide_006/">></a>
+
+      <h2 class="slide__title">
+        <a class="slide__title" href="../slide_001">
+        Setting up the Project
+        </a>
+      </h2>
+
+      <p class="logo">
+        <a class="slide__title" href="../slide_001">
+          <span>(“</span>Manchester<span>”)+<br></span><span>(“</span>Digital<span>”)></span>
+        </a>
+      </p>
+    </nav>
+    <main class=grid-2>
+      <section class="slide__text">
+<h4>Required Downloads</h4>
+<ul>
+<li>Make sure the following has been installed on your computer:
+<ul>
+<li><strong>Docker Desktop</strong> for <a href="https://docs.docker.com/desktop/windows/install/">Windows</a> or <a href="https://docs.docker.com/desktop/mac/install/">Mac</a></li>
+<li>A code editor with an integrated terminal (e.g. <a href="https://code.visualstudio.com/download">VS Code</a>)</li>
+<li><a href="https://nodejs.org/en/download/">Node js (v14.15.1 or above)</a>
+<ul>
+<li>You can check if it has installed by running <code>node --version</code> in a terminal session</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Project Set Up</h4>
+<ul>
+<li>Add a folder somewhere on your computer.  This will store the project.</li>
+<li>Open this folder as a new project in your code editor.</li>
+<li>Open a terminal window (if using VS Code, the shortcut is <code>ctrl</code>+<code>'</code>).</li>
+<li><code>cd &lt;file path&gt;</code> to the folder you've just created</li>
+<li>Run <code>git clone https://github.com/MCR-Digital/apprentice-boot-camp-databases.git</code>
+<ul>
+<li>If successful, you should be able to see the files in the <a href="https://github.com/MCR-Digital/apprentice-boot-camp-databases">course's Github repo</a></li>
+</ul>
+</li>
+<li>Run <code>cd .\apprentice-boot-camp-databases\</code> to access the root folder</li>
+</ul>
+<h4>Docker Desktop</h4>
+<ul>
+<li>Open Docker Desktop</li>
+<li>Check for a folder called <code>apprentice-boot-camp-databases</code></li>
+</ul>
+<hr />
+<ul>
+<li>If this Docker folder <strong>does not exist</strong>:
+<ul>
+<li>In your terminal, run <code>./setup.sh</code> (if using a Mac) or <code>./setup.bat</code> (if using Windows)</li>
+<li>Leave it to run. It may take a few minutes for the setup process to complete</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>If this Docker folder <strong>does exist</strong> but is greyed out:
+<ul>
+<li>In your terminal, run <code>./run.sh</code> (if using a Mac) or <code>./run.bat</code> (if using Windows)</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>After about 30 seconds, check the services are running as per screenshot 1</li>
+<li>You can stop the services at any time by hitting <code>ctrl</code>+<code>c</code> or <code>cmd</code>+<code>c</code> on the terminal session and terminating the batch job if prompted.</li>
+<li>Stopping the services will not remove them from Docker Desktop.</li>
+<li>They can be restarted with <code>./run.sh</code> or <code>./run.bat</code> as above.</li>
+</ul>
+<h4>Project Locations</h4>
+<ul>
+<li>Sequel-Mart frontend should be on <a href="http://localhost:5001/">http://localhost:5001/</a></li>
+<li>pgAdmin 4 (PostgreSQL's Managed Database Platform) should be on <a href="http://localhost:5050/">http://localhost:5050/</a>
+<ul>
+<li>NOTE: The setup might not work if you already have something running on these ports</li>
+<li>In that case you will have to:
+<ul>
+<li>Adjust the port numbers of lines 32 and/or 46 of docker-compose.yml (screenshot 4)</li>
+<li>Save the .yml, <code>teardown</code> the project (as below) and run <code>setup</code> again (as above)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>We will eventually populate the Sequel-Mart front-end with data from the PostgreSQL database</li>
+</ul>
+<h4>Accessing PostgreSQL</h4>
+<ul>
+<li>In pgAdmin, expand <code>Servers</code> on the top left</li>
+<li>It will prompt you for a password.  This is <code>MDigital21</code></li>
+<li>You should now see the server group (sequel-mart) and an expandable list called Databases.</li>
+<li>Expand <code>Databases</code> &gt; <code>sequel-mart</code> &gt; <code>Schemas</code> &gt; <code>sequel-mart-schema</code> &gt; <code>tables</code></li>
+<li>There should be 6 tables:
+<ul>
+<li><code>Customers</code>, <code>Dates</code>, <code>Products</code>, <code>Sales_Detail</code>, <code>Sales_Header</code> and <code>Stores</code></li>
+</ul>
+</li>
+</ul>
+<h4>Tearing Down the Project</h4>
+<ul>
+<li><span>When you no longer need the project on your machine:</span></li>
+<li><span>In your terminal, run <code>./teardown.sh</code> (if using a Mac) or <code>./teardown.bat</code> (if using Windows)</span></li>
+<li><span>When <code>./teardown</code> has completed, you can remove the greyed-out folder completely from Docker Desktop</span></li>
+<li><span>They can be recreated with <code>./setup.sh</code> or <code>./setup.bat</code> as above if needed.</span></li>
+</ul>
+</section>
+<section class="slide__images">
+    <caption>1. Docker Desktop (setup complete)</caption>
+    <img src="../../images/001_Docker_Setup.png" />
+    <caption>2. Sequel-Mart web page</caption>
+    <img src="../../images/001_SequelMart_Setup.png" />
+    <caption>3. PostgreSQL on first load</caption>
+    <img src="../../images/001_PostgreSQL_Setup.png" />
+    <caption>4. Default Port locations on docker-compose.yml</caption>
+    <img src="../../images/001_Setup_Ports.png" />
+    <caption>5. Permanently delete the project folder from docker desktop</caption>
+    <img src="../../images/001_Docker_Teardown_Delete.png" />
+</section>
+    </main>
+        
+    <footer>
+      
+
+      <h3>
+        <a class="slide__title" href="../slide_001">
+        Database Bootcamp 6
+        </a>
+      </h3>
+
+      <h5 class="slide__copy">
+        <span>© Thomas Steeples 2022</span>
+      </h5>
+
+
+      <p class="slide-number">Slide 5</p>
+    </footer>
+  </article>
+  <script src="../../js/app.js"></script>
+</body>
+</html>

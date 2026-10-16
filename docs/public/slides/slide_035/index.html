@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+  </style>
+  <link rel="stylesheet" href="../../css/theme_003.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <title>Slides</title>
+</head>
+<body>
+  <article class="container">
+        <nav>
+      
+      
+      <h3 class="section__title">
+        <a class="slide__title" href="../slide_001">
+        How do we change content?
+        </a>
+      </h3>
+      
+      <a class="slide__previous" href="../slide_034/"><</a>
+      <link rel="stylesheet" href="../../css/theme_003.css">
+      <a class="slide__next" href="../slide_036/">></a>
+
+      <h2 class="slide__title">
+        <a class="slide__title" href="../slide_001">
+        ALTER COLUMN...
+        </a>
+      </h2>
+
+      <p class="logo">
+        <a class="slide__title" href="../slide_001">
+          <span>(“</span>Manchester<span>”)+<br></span><span>(“</span>Digital<span>”)></span>
+        </a>
+      </p>
+    </nav>
+    <main class=grid-2>
+      <section class="slide__text">
+<h5>Tell the server that you want to change a column attribute</h5>
+<p>We can change a lot of things about a table. The most common are:</p>
+<h6>Data Type</h6>
+<pre><code>ALTER TABLE &lt;schema_name&gt;.&lt;table_name&gt;
+ALTER COLUMN &lt;column_name&gt; SET DATA TYPE  &lt;data_type1&gt;;
+</code></pre>
+<div class="warning">- You will get an error if data in the table is outside of the proposed new data type</div>
+<h6>Default value</h6>
+<pre><code>ALTER TABLE &lt;schema_name&gt;.&lt;table_name&gt;
+ALTER COLUMN &lt;column_name&gt; SET DEFAULT &lt;default_value&gt; | DROP DEFAULT;
+</code></pre>
+<h6>Nullability of a column</h6>
+<pre><code>ALTER TABLE &lt;schema_name&gt;.&lt;table_name&gt;
+ALTER COLUMN &lt;column_name&gt; SET NOT NULL | DROP NOT NULL;
+</code></pre>
+<div class="warning">- You will get an error if you `SET NOT NULL` when the column already contains `NULL` rows</div>
+<h6>Example table</h6>
+<p>To practice, let's recreate the <code>aaa_Dummy_Table</code> on our <code>sequel-mart-schema</code>:</p>
+<pre><code>CREATE TABLE &quot;sequel-mart-schema&quot;.&quot;aaa_Dummy_Table&quot; (
+	column_001 INT,
+	column_002 VARCHAR(10),
+	column_003 TIMESTAMP,
+	column_004 NUMERIC(9,2)
+);
+</code></pre>
+<p>Let's change the data type of <code>column_001</code> from an <code>INT</code> to a <code>SMALLINT</code></p>
+<pre><code>ALTER TABLE &quot;sequel-mart-schema&quot;.&quot;aaa_Dummy_Table&quot;
+ALTER COLUMN column_001 SET DATA TYPE SMALLINT;
+</code></pre>
+<p>Now let's force <code>column_002</code> and <code>column_004</code> to not accept <code>NULL</code> as an input</p>
+<pre><code>ALTER TABLE &quot;sequel-mart-schema&quot;.&quot;aaa_Dummy_Table&quot;
+ALTER COLUMN column_002 SET NOT NULL;
+
+ALTER TABLE &quot;sequel-mart-schema&quot;.&quot;aaa_Dummy_Table&quot;
+ALTER COLUMN column_004 SET NOT NULL;
+</code></pre>
+<p>Finally let's set a default value for <code>column_002</code> of 'Unknown'</p>
+<pre><code>ALTER TABLE &quot;sequel-mart-schema&quot;.&quot;aaa_Dummy_Table&quot;
+ALTER COLUMN column_002 SET DEFAULT 'Unknown';
+</code></pre>
+<hr/>
+<h6>Testing our new constraints</h6>
+<p>If we insert the following record (notice we're not including <code>column_002</code> or <code>column_003</code>):</p>
+<pre><code>INSERT INTO &quot;sequel-mart-schema&quot;.&quot;aaa_Dummy_Table&quot;
+	(column_001, column_004)
+VALUES (10, 89.56);
+</code></pre>
+<p>...and query our table:</p>
+<pre><code>SELECT *
+FROM &quot;sequel-mart-schema&quot;.&quot;aaa_Dummy_Table&quot;;
+</code></pre>
+<p>We notice that (screenshot 6):</p>
+<ul>
+<li><code>column_001</code> has changed datatype and is now <code>SMALLINT</code></li>
+<li><code>column_002</code> has used our default value of 'Unknown'</li>
+<li><code>column_003</code> has no default value but can accept <code>NULL</code> so it uses that</li>
+</ul>
+<hr />
+<p>Now let's try to violate the constraints.</p>
+<p>If we try to run:</p>
+<pre><code>INSERT INTO &quot;sequel-mart-schema&quot;.&quot;aaa_Dummy_Table&quot;
+	(column_001, column_003)
+VALUES (10, '2021-09-01 15:02:55');
+</code></pre>
+<p>We get the following helpful message:</p>
+<pre><code>ERROR:  null value in column &quot;column_004&quot; of relation &quot;aaa_Dummy_Table&quot; violates not-null constraint
+</code></pre>
+<p>This tells us that <code>column_004</code> has a <code>NOT NULL</code> constraint but no <code>DEFAULT</code> value</p>
+<p>We have to specify a value every time not to get an error</p>
+<hr/>
+<p>Setting up constraints is a way of:</p>
+<ul>
+<li>Adding an extra layer of quality control to the data we add to our tables</li>
+<li>Helping Postgresql to process queries faster because we're telling it what it doesn't have to look out for (<code>NULL</code> values in this case)</li>
+</ul>
+</section>
+<section class="slide__images">
+<caption>1. CREATE aaa_Dummy_Table</caption>
+<img src="../../images/003_DROP_Dummy_Table_CREATE.png" />
+<caption>2. SELECT FROM aaa_Dummy_Table</caption>
+<img src="../../images/003_DROP_Dummy_Table_SELECT.png" />
+<caption>3. DATA TYPE Change</caption>
+<img src="../../images/003_ALTER_Dummy_Table_DATA_TYPE_SQL.png" />
+<caption>4. NOT NULL Change</caption>
+<img src="../../images/003_ALTER_Dummy_Table_NOT_NULL_SQL.png" />
+<caption>5. DEFAULT Value Change</caption>
+<img src="../../images/003_ALTER_Dummy_Table_DEFAULT_SQL.png" />
+<caption>6. First test of aaa_Dummy_Table constraints</caption>
+<img src="../../images/003_ALTER_Dummy_Table_Test_1.png" />
+<caption>7. Error test of aaa_Dummy_Table constraints</caption>
+<img src="../../images/003_ALTER_Dummy_Table_Test_2.png" />
+</section>
+<section class="slide__exercises">
+<hr>
+<h4>Exercises:</h4>
+<ol>
+<li>Add a few more constraints to the <code>aaa_Dummy_Table</code> and <code>INSERT</code> some more records.
+<ul>
+<li>Debug any errors with your mentor and share with the group</li>
+</ul>
+</li>
+</ol>
+</section>
+    </main>
+        
+    <footer>
+      
+
+      <h3>
+        <a class="slide__title" href="../slide_001">
+        Database Bootcamp 6
+        </a>
+      </h3>
+
+      <h5 class="slide__copy">
+        <span>© Thomas Steeples 2022</span>
+      </h5>
+
+
+      <p class="slide-number">Slide 35</p>
+    </footer>
+  </article>
+  <script src="../../js/app.js"></script>
+</body>
+</html>

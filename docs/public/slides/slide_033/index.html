@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+  </style>
+  <link rel="stylesheet" href="../../css/theme_003.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <title>Slides</title>
+</head>
+<body>
+  <article class="container">
+        <nav>
+      
+      
+      <h3 class="section__title">
+        <a class="slide__title" href="../slide_001">
+        How do we change content?
+        </a>
+      </h3>
+      
+      <a class="slide__previous" href="../slide_032/"><</a>
+      <link rel="stylesheet" href="../../css/theme_003.css">
+      <a class="slide__next" href="../slide_034/">></a>
+
+      <h2 class="slide__title">
+        <a class="slide__title" href="../slide_001">
+        TRUNCATE TABLE...
+        </a>
+      </h2>
+
+      <p class="logo">
+        <a class="slide__title" href="../slide_001">
+          <span>(“</span>Manchester<span>”)+<br></span><span>(“</span>Digital<span>”)></span>
+        </a>
+      </p>
+    </nav>
+    <main class=grid-2>
+      <section class="slide__text">
+<h5>Clear a table</h5>
+<p>Tell the server that you want to:</p>
+<ul>
+<li>Remove all existing record(s) in a table</li>
+<li>Reset it’s cache (reset any incrementing keys, indexes, data space)</li>
+</ul>
+<pre><code>TRUNCATE TABLE &lt;schema_name&gt;.&lt;table_name&gt;;
+</code></pre>
+<div class="warning">IMPORTANT:</div>
+<div class="warning">- Truncating will remove ALL existing data from a table. Check before committing!</div>
+<div class="warning">- Not a pleasant feeling if done unintentionally!</div>
+<h6>stage_Product_Offers</h6>
+<p>Let's clear the <code>stage_Product_Offers</code> in readiness for more CSV files in the future:</p>
+<pre><code>TRUNCATE TABLE &quot;sequel-mart-schema&quot;.&quot;stage_Product_Offers&quot;;
+</code></pre>
+<p>This removes every record from this table.  All other tables are unaffected.</p>
+<p>NOTE:</p>
+<ul>
+<li>
+<p>We could use the shorthand <code>TRUNCATE</code> instead of <code>TRUNCATE TABLE</code></p>
+<pre><code>TRUNCATE &quot;sequel-mart-schema&quot;.&quot;stage_Product_Offers&quot;;
+</code></pre>
+</li>
+</ul>
+</section>
+<section class="slide__images">
+<caption>1. All columns of the stage_Product_Offers table</caption>
+<img src="../../images/003_DELETE_stage_Product_Offers_Before_May_2021_After.png" />
+<caption>2. Truncate stage_Product_Offers</caption>
+<img src="../../images/003_TRUNCATE_stage_Product_Offers.png" />
+<caption>3. stage_Product_Offers is empty once truncated</caption>
+<img src="../../images/003_TRUNCATE_stage_Product_Offers_After.png" />
+</section>
+
+    </main>
+        
+    <footer>
+      
+
+      <h3>
+        <a class="slide__title" href="../slide_001">
+        Database Bootcamp 6
+        </a>
+      </h3>
+
+      <h5 class="slide__copy">
+        <span>© Thomas Steeples 2022</span>
+      </h5>
+
+
+      <p class="slide-number">Slide 33</p>
+    </footer>
+  </article>
+  <script src="../../js/app.js"></script>
+</body>
+</html>

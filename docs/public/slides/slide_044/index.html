@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+  </style>
+  <link rel="stylesheet" href="../../css/theme_004.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <title>Slides</title>
+</head>
+<body>
+  <article class="container">
+        <nav>
+      
+      
+      <h3 class="section__title">
+        <a class="slide__title" href="../slide_001">
+        How do we change content?
+        </a>
+      </h3>
+      
+      <a class="slide__previous" href="../slide_043/"><</a>
+      <link rel="stylesheet" href="../../css/theme_004.css">
+      <a class="slide__next" href="../slide_045/">></a>
+
+      <h2 class="slide__title">
+        <a class="slide__title" href="../slide_001">
+        SQL Injection
+        </a>
+      </h2>
+
+      <p class="logo">
+        <a class="slide__title" href="../slide_001">
+          <span>(“</span>Manchester<span>”)+<br></span><span>(“</span>Digital<span>”)></span>
+        </a>
+      </p>
+    </nav>
+    <main class=grid-2>
+      <section class="slide__text">
+<h4>One of the most common types of hacking attack for SQL</h4>
+<ul>
+<li>Used by hackers to establish what is there (e.g. by reading system tables)</li>
+<li>Used to modify and/or delete data or execute administration operations to an Operating System</li>
+</ul>
+<h6>This can be used to:</h6>
+<ul>
+<li>Read unauthorised data <span>- Information Disclosure</span></li>
+<li>Modify a system to a criminal’s advantage <span>- Authentication Bypass</span></li>
+<li>Delete tables, databases or servers <span>- Compromise Availability</span></li>
+<li>Take control of a system and use it for criminal activity <span>- Remote Command Execution</span></li>
+</ul>
+<h5>Motivations for trying to hack a company's data</h5>
+<ul>
+<li>Personal Gain</li>
+<li>Damage a Competitor</li>
+<li>Revenge</li>
+<li>Challenge or 'thrill' of doing so</li>
+</ul>
+<h5>Risks of falling foul of this</h5>
+<ul>
+<li>Reputation <span>- Company and Individual</span></li>
+<li>Financial Loss <span>- Company and Individual</span></li>
+<li>Breaches of Conduct
+<ul>
+<li><span>General Data Protection Regulation (GDPR)</span></li>
+<li><span>Concent for Collecting Personal Data (CCPA)</span></li>
+</ul>
+</li>
+<li>Security Risk <span>- Company, Individual, Customers and Clients</span></li>
+</ul>
+<hr />
+<h5>An example of SQL Injection syntax</h5>
+<p>If our website had the option of user input and we wrote a search box
+Let's say we wanted to return a list of varieties of products</p>
+<p>If we were careless and added an input parameter like this:</p>
+<pre><code>SELECT product_variety
+FROM &quot;sequel-mart-schema&quot;.&quot;Products&quot;
+WHERE product_item = '&lt;User Parameter&gt;'
+</code></pre>
+<p>If someone entered <code>apples</code>, the query would read:</p>
+<pre><code>SELECT product_item
+FROM &quot;sequel-mart-schema&quot;.&quot;Products&quot;
+WHERE product_item = 'apples'
+</code></pre>
+<p>All would be good, the user would see all types of apples</p>
+<hr />
+<h6>Hacking example 1</h6>
+<p>Howver, a hacker could enter <code>'apples'; SELECT * from pg_tables;--</code></p>
+<p>This would turn the query into</p>
+<pre><code>SELECT product_variety
+FROM &quot;sequel-mart-schema&quot;.&quot;Products&quot;
+WHERE product_item = 'apples'; SELECT * from pg_tables;--
+</code></pre>
+<ul>
+<li>The first semi-colon terminates the first query</li>
+<li>The second one is executed and returned to the screen.</li>
+<li>The <code>--</code> at the end are comments and make it unlikely that any further code is considered</li>
+</ul>
+<p>The result is that our application could suddenly expose our entire database structure</p>
+<p>This could be used to:</p>
+<ul>
+<li>Change things (e.g. add extra digits to a bank balance)</li>
+<li>Delete things (e.g. remove tables, schemas, databases</li>
+<li>Control things (e.g. take control of servers)</li>
+</ul>
+<h6>Hacking example 2</h6>
+<div class="warning">Don't test these queries on other tables your database!  You'll need them for the exercises!</div>
+<p>Even worse would be <code>'apples'; DROP TABLE &quot;sequel-mart-schema&quot;.&quot;aaa_Dummy_Table&quot;;--</code></p>
+<p>This would turn the query into</p>
+<pre><code>SELECT product_variety
+FROM &quot;sequel-mart-schema&quot;.&quot;Products&quot;
+WHERE product_item = 'apples'; DROP TABLE &quot;sequel-mart-schema&quot;.&quot;aaa_Dummy_Table&quot;;--
+</code></pre>
+<p>and our <code>aaa_Dummy_Table</code> table would be gone.</p>
+<hr />
+<h4>Protecting Against SQL Injection</h4>
+<h5>Network</h5>
+<ul>
+<li>Use HTTPS End-to-end encryption</li>
+<li>Use IPS Signitures &amp; keep them updated to detect threats
+<ul>
+<li>Regex signitures that detect whether a script is vulnerable to known attacking techniques</li>
+</ul>
+</li>
+</ul>
+<h5>Application (Frontend)</h5>
+<ul>
+<li>Assume code is malicious unless proven not to be</li>
+<li>Validate user input (e.g. must be an email format, a number between 0 and 9 where possible)</li>
+<li>Validate all input strings (e.g. apply escape characters to known Injection patterns)</li>
+</ul>
+<h5>Application (Backend)</h5>
+<ul>
+<li>Use command parameters (put the values from an input into separate parameters &amp; use dynamically)</li>
+<li>Cast input types for fields and reject if it doesn't match</li>
+<li>Minimise user privileges</li>
+<li>Minimise user's access to IP address ranges &amp; open ports</li>
+<li>Use a 'staging' database to triage new data before committing to the ‘live’ database</li>
+<li>Encrypt sensitive data (e.g. SHA-2 for passwords, one-way hash for other data)</li>
+<li>Remove unneeded data</li>
+</ul>
+<hr />
+<h4>Final Thoughts</h4>
+<ul>
+<li>Bear in mind all frontend and backend developers are jointly responsible for following GDPR guidelines</li>
+<li>Make sure data sanitisation is a key part of designing a project</li>
+<li>Breaches by criminals can be very costly financially, legally, and through lost reputation</li>
+</ul>
+</section>
+<section class="slide__images">
+</section>
+
+    </main>
+        
+    <footer>
+      
+
+      <h3>
+        <a class="slide__title" href="../slide_001">
+        Database Bootcamp 6
+        </a>
+      </h3>
+
+      <h5 class="slide__copy">
+        <span>© Thomas Steeples 2022</span>
+      </h5>
+
+
+      <p class="slide-number">Slide 44</p>
+    </footer>
+  </article>
+  <script src="../../js/app.js"></script>
+</body>
+</html>

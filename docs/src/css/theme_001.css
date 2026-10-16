@@ -1,0 +1,26 @@
+:root {
+  --clr-bg-1: hsl(0, 0%, 97%);
+  --clr-bg-code: hsl(0, 0%, 88%);
+  --clr-bg-highlight: hsl(0, 0%, 91%);
+
+  --clr-text-main: hsl(198, 31%, 35%);
+  --clr-text-main-hover: hsl(198, 21%, 15%);
+  --clr-text-sect: hsl(198, 31%, 35%);
+
+
+
+  
+  --clr-text-sect-2: hsl(184, 50%, 46%);
+  --clr-text-sect-3: hsl(0, 50%, 66%);
+  --clr-text-sect-4: hsl(119, 27%, 42%);
+  --clr-text-sect-5: hsl(240, 13%, 52%);
+  --clr-text-sect-6: hsl(324, 76%, 48%);
+
+  --clr-bg-sect: hsl(198, 31%, 35%, 0.15);
+  --clr-bg-sect-2: hsl(184, 50%, 46%, 0.15);
+  --clr-bg-sect-3: hsl(0, 50%, 66%, 0.15);
+  --clr-bg-sect-4: hsl(119, 50%, 66%, 0.15);
+  --clr-bg-sect-5: hsl(235, 41%, 45%, 0.2);
+  --clr-bg-sect-6: hsl(324, 76%, 48%, 0.15);
+
+}

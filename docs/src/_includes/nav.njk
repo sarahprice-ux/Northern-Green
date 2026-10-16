@@ -1,0 +1,25 @@
+    <nav>
+      {# <h3 class="section__title">{{ section_title }}</h3> #}
+      
+      <h3 class="section__title">
+        <a class="slide__title" href="{{ '../slide_001' | url }}">
+        {{ section_title }}
+        </a>
+      </h3>
+      
+      <a class="slide__previous" href="{{'../'}}{{ slide_prev | url }}"><</a>
+      <link rel="stylesheet" href="{{ '../../css/'}}{{ theme }}{{'.css' | url }}">
+      <a class="slide__next" href="{{'../'}}{{ slide_next | url }}">></a>
+
+      <h2 class="slide__title">
+        <a class="slide__title" href="{{ '../slide_001' | url }}">
+        {{ slide_title }}
+        </a>
+      </h2>
+
+      <p class="logo">
+        <a class="slide__title" href="{{ '../slide_001' | url }}">
+          <span>(“</span>Manchester<span>”)+<br></span><span>(“</span>Digital<span>”)></span>
+        </a>
+      </p>
+    </nav>

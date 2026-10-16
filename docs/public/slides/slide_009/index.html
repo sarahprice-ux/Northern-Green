@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+  </style>
+  <link rel="stylesheet" href="../../css/theme_002.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <title>Slides</title>
+</head>
+<body>
+  <article class="container">
+        <nav>
+      
+      
+      <h3 class="section__title">
+        <a class="slide__title" href="../slide_001">
+        How do we query a relational database?
+        </a>
+      </h3>
+      
+      <a class="slide__previous" href="../slide_008/"><</a>
+      <link rel="stylesheet" href="../../css/theme_002.css">
+      <a class="slide__next" href="../slide_010/">></a>
+
+      <h2 class="slide__title">
+        <a class="slide__title" href="../slide_001">
+        SELECT ...
+        </a>
+      </h2>
+
+      <p class="logo">
+        <a class="slide__title" href="../slide_001">
+          <span>(“</span>Manchester<span>”)+<br></span><span>(“</span>Digital<span>”)></span>
+        </a>
+      </p>
+    </nav>
+    <main class=grid-2>
+      <section class="slide__text">
+<h4>Requesting some information</h4>
+<pre><code>SELECT &lt;value1&gt;, &lt;value2&gt;;
+</code></pre>
+<p>It's like saying: <span> &quot;Hey, PostgreSQL; please can I have this returned to me?&quot; </span></p>
+<h5>For example:</h5>
+<ul>
+<li><code>SELECT 123;</code> returns the number 123 in the results panel</li>
+<li><code>SELECT 'Hello World';</code> returns the text 'Hello'</li>
+</ul>
+<h5>Notes:</h5>
+<ul>
+<li>We can execute the SQL by:
+<ul>
+<li>Clicking the play button on the toolbar at the top</li>
+<li>Using the shortcut <code>F5</code></li>
+</ul>
+</li>
+<li>Note the <strong>semi-colons</strong> at the end of each query:
+<ul>
+<li>This tells PostgreSQL they are two separate queries</li>
+<li>If these are removed and both queries are run, we would get a syntax error</li>
+<li>If multiple queries are in the same session only the last query will return a result</li>
+<li>To run a specific query, highlight it before executing it</li>
+</ul>
+</li>
+<li><strong>Text and Dates</strong> need to be surrounded by <strong>single-quotes</strong> (not double-quotes)
+<ul>
+<li>e.g. <code>SELECT 'Hello World';</code></li>
+</ul>
+</li>
+<li><strong>Integers and Numerics</strong> can be put in as they are
+<ul>
+<li>e.g. <code>SELECT 123;</code></li>
+</ul>
+</li>
+<li><strong>Multiple columns</strong> can be added by separating with commas
+<ul>
+<li>e.g. <code>SELECT 'foo', 'bar', 42, 2.73;</code> returns 4 columns</li>
+</ul>
+</li>
+</ul>
+<hr />
+<p>We can use <code>SELECT</code> to perform calculations with <strong>arithmetic operators</strong></p>
+<ul>
+<li><code>SELECT 12 + 23;</code> returns the number 35 <span> &quot;Hey, PostgreSQL; what is 12 + 23?&quot;</span></li>
+<li><code>SELECT 10 * 8;</code> returns the number 80<span> &quot;Hey, PostgreSQL; what is 10 x 8?&quot;</span></li>
+<li><code>SELECT 3.14 + 2.73;</code> returns the decimal 5.87<span> &quot;Hey, PostgreSQL; what is 3.14 + 2.73?&quot;</span></li>
+<li><code>SELECT 56 - 23 + 12.3;</code> returns the decimal 45.3</li>
+<li><code>SELECT 56 - (23 + 12.3);</code> returns the decimal 20.7 (following <a href="https://en.wikipedia.org/wiki/Order_of_operations">BODMAS</a>)</li>
+</ul>
+<h6>Booleans (A data type that returns <code>true</code> or <code>false</code>)</h6>
+<ul>
+<li><code>SELECT true</code> returns a boolean true, <code>SELECT false</code> returns a boolean false</li>
+</ul>
+<h6>Aliasing</h6>
+<ul>
+<li>At the moment the column header is <code>?column?</code></li>
+<li>If we include the <code>AS</code> keyword, we can give the column a name
+<ul>
+<li>e.g. <code>SELECT 123 AS my_number</code> replaces <code>?column?</code> with <code>my_number</code> (screenshot 5)</li>
+</ul>
+</li>
+<li>When we query the database the column name of the table will be used by default
+<ul>
+<li>That behaviour can also be overwritten by the <code>AS</code> keyword</li>
+</ul>
+</li>
+</ul>
+</section>
+<section class="slide__images">
+    <caption>1. Return some text</caption>
+    <img src="../../images/002_SELECT_Text.png" />
+    <caption>2. Example of a syntax error, missed semicolon</caption>
+    <img src="../../images/002_SELECT_Error.png" />
+    <caption>3. Example of a multi-line select, only returns the last statement</caption>
+    <img src="../../images/002_SELECT_Multi_Line.png" />
+    <caption>4. Example of a multi-line select, running highlighted statement</caption>
+    <img src="../../images/002_SELECT_Highlighted.png" />
+    <caption>5. Example of a column name being assigned</caption>
+    <img src="../../images/002_SELECT_As_Alias.png" />
+</section>
+<section class="slide__exercises">
+<hr>
+<h4>Exercises:</h4>
+<ul>
+<li>Practice some more sums
+<ul>
+<li>Include minus (-), divide (/) or modulus (%) and combine numbers and/or decimals</li>
+</ul>
+</li>
+</ul>
+</section>
+    </main>
+        
+    <footer>
+      
+
+      <h3>
+        <a class="slide__title" href="../slide_001">
+        Database Bootcamp 6
+        </a>
+      </h3>
+
+      <h5 class="slide__copy">
+        <span>© Thomas Steeples 2022</span>
+      </h5>
+
+
+      <p class="slide-number">Slide 9</p>
+    </footer>
+  </article>
+  <script src="../../js/app.js"></script>
+</body>
+</html>
